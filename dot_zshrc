@@ -1,0 +1,194 @@
+## History file configuration
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=50000
+export SAVEHIST=10000
+
+## History command configuration
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data
+
+# Zinit install
+[[ ! -f ~/.zinit/bin/zinit.zsh ]] && {
+    command mkdir -p ~/.zinit
+    command git clone https://github.com/zdharma/zinit ~/.zinit/bin
+}
+source "$HOME/.zinit/bin/zinit.zsh"
+
+# Zplugin annexes
+zinit light-mode for \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-submods \
+    zinit-zsh/z-a-bin-gem-node \
+    zinit-zsh/z-a-rust
+
+# Fast-syntax-highlighting & autosuggestions
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
+    zdharma/fast-syntax-highlighting \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
+ blockf \
+    zsh-users/zsh-completions
+
+# Setup internal zinit directories
+mkdir -p $ZPFX/{bin,man/man1}
+
+# Install starship prompt
+zinit ice as"command" from"gh-r" \
+    atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+    atpull"%atclone" \
+    src"init.zsh"
+zinit light starship/starship
+
+# Install exa as an ls replacement
+zinit ice wait lucid as"command" from"gh-r" \
+    atclone"cp -vf completions/exa.zsh _exa; cp -vf man/exa*.1 $ZPFX/man/man1" \
+    atpull"%atclone" \
+    atdelete"rm -f $ZPFX/man/man1/exa*.1" \
+    sbin"bin*/exa -> exa" \
+    atload"alias ls=exa"
+zinit light ogham/exa
+
+# Install fd as a find replacement
+zinit ice wait lucid as"command" from"gh-r" \
+    atclone"cp -vf fd*/fd.1 $ZPFX/man/man1" \
+    atpull"%atclone" \
+    atdelete"rm -f $ZPFX/man/man1/fd.1" \
+    sbin"fd*/fd -> fd" \
+    atload"alias find=fd"
+zinit light sharkdp/fd
+
+# Install ripgrep as a grep replacement
+zinit ice wait lucid as"command" from"gh-r" \
+    atclone"cp -vf ripgrep*/doc/rg.1 $ZPFX/man/man1" \
+    atpull"%atclone" \
+    atdelete"rm -f $ZPFX/man/man1/rg.1" \
+    sbin"ripgrep*/rg -> rg" \
+    atload"alias grep=rg"
+zinit light BurntSushi/ripgrep
+
+# Install dua as a du replacement
+zinit ice wait lucid as"command" from"gh-r" \
+    sbin"dua*/dua -> dua" \
+    atload"alias du=dua"
+zinit light Byron/dua-cli
+
+# Install bat as a cat replacement
+zinit ice wait lucid as"command" from"gh-r" \
+    atclone"cp -vf bat*/autocomplete/bat.zsh _bat; cp -vf bat*/bat.1 $ZPFX/man/man1" \
+    atpull"%atclone" \
+    atdelete"rm -f $ZPFX/man/man1/bat.1" \
+    sbin"bat*/bat -> bat" \
+    atload"alias cat=bat --paging=never"
+zinit light sharkdp/bat
+
+# Install hyperfine as a time replacement
+zinit ice wait lucid as"command" from"gh-r" \
+    atclone"cp -vf hyperfine*/hyperfine.1 $ZPFX/man/man1" \
+    atpull"%atclone" \
+    atdelete"rm -f $ZPFX/man/man1/hyperfine.1" \
+    sbin"hyperfine*/hyperfine -> hyperfine" \
+    atload"alias time=hyperfine"
+zinit light sharkdp/hyperfine
+
+# Install csview
+zinit ice wait lucid as"command" from"gh-r" \
+    sbin"csview*/csview -> csview" \
+    atload"alias csv=csview"
+zinit light wfxr/csview
+
+# Install k6
+zinit ice wait lucid as"command" from"gh-r" \
+    bpick="*-amd64.tar.gz" \
+    sbin"k6*/k6 -> k6"
+zinit light grafana/k6
+
+# Install chafa
+zinit id-as='chafa' as='readurl|command' extract \
+    dlink='!chafa-%VERSION%-1-x86_64-linux-gnu.tar.gz' \
+        for https://hpjansson.org/chafa/releases/static/
+
+# Setup kubernetes autocomplete if it's install
+zinit ice wait lucid has"kubectl" \
+    id-as"kubectl" \
+    as"completion" \
+    atclone"kubectl completion zsh > _kubectl" \
+    atpull"%atclone"
+zinit light zdharma/null
+
+# Setup github cli autocomplete if it's setup
+zinit ice wait lucid has"gh" \
+    id-as"gh" \
+    as"completion" \
+    atclone'gh completion --shell zsh > _gh'  \
+    atpull'%atclone'
+zinit light zdharma/null
+
+### FZF Setup
+zinit ice wait lucid as"command" from"gh-r" \
+    sbin"fzf" \
+    dl"https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh -> completion.zsh; \
+       https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh -> key-bindings.zsh; \
+       https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1 -> $ZPFX/man/man1/fzf-tmux.1; \
+       https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1 -> $ZPFX/man/man1/fzf.1" \
+    multisrc'{key-bindings,completion}.zsh'
+zinit light -b junegunn/fzf
+
+# Setup tab autocomplete to use fzf
+zinit ice wait lucid
+zinit light Aloxaf/fzf-tab
+
+zstyle ':fzf-tab:*' switch-group ',' '.'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:descriptions' format '[%d]'
+
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+
+zstyle ':fzf-tab:complete:(ls|exa):*' fzf-preview 'mime=$(file -bL --mime-type "$realpath"); \
+category=${mime%%/*}; \
+kind=${mime##*/}; \
+if [[ -d "$realpath" ]]; then
+    if [[ -x "$(command -v exa)" ]]; then
+	    exa --git -hl --color=always --icons "$realpath"
+    else
+        ls $realpath
+    fi
+elif [ "$category" = text ]; then
+    if [[ -x "$(command -v bat)" ]]; then
+	    bat --style=numbers --color=always --line-range :100 "$realpath"
+    else
+        cat "$realpath"
+    fi
+elif [ "$category" = image ]; then
+	[[ -x "$(command -v chafa)" ]] && chafa "$realpath"; [[ -x "$(command -v exiftool)" ]] && exiftool "$realpath"
+fi'
+
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
+
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview '[[ $group == "[process ID]" ]] && ps --pid=$word -o cmd --no-headers -w -w'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
+
+# Install fzf helpers for git
+zinit ice wait lucid
+zinit load wfxr/forgit
+
+# Golang
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
+# Python
+if [ -n "$PYTHONPATH" ]; then
+    export PYTHONPATH='$HOME/.local/share/pdm/venv/lib/python3.8/site-packages/pdm/pep582':$PYTHONPATH
+else
+    export PYTHONPATH='$HOME/.local/share/pdm/venv/lib/python3.8/site-packages/pdm/pep582'
+fi
+
+# Other
+export MANPAGER="sh -c 'col -bx | bat -l man -p --paging always'"
