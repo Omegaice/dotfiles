@@ -1,0 +1,76 @@
+{
+    "telemetry.enableTelemetry": false,
+    "editor.fontSize": 16,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "editor.fontFamily": "'FiraCode Nerd Font Mono'",
+    "editor.fontLigatures": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "vs-kubernetes": {
+        "disable-linters": [
+            "resource-limits"
+        ],
+        "vs-kubernetes.namespace": "",
+        "vs-kubernetes.kubectl-path": "",
+        "vs-kubernetes.helm-path": "",
+        "vs-kubernetes.minikube-path": "",
+        "vs-kubernetes.kubectlVersioning": "user-provided",
+        "vs-kubernetes.outputFormat": "yaml",
+        "vs-kubernetes.kubeconfig": "",
+        "vs-kubernetes.knownKubeconfigs": [],
+        "vs-kubernetes.autoCleanupOnDebugTerminate": false,
+        "vs-kubernetes.nodejs-autodetect-remote-root": true,
+        "vs-kubernetes.nodejs-remote-root": "",
+        "vs-kubernetes.nodejs-debug-port": 9229,
+        "vs-kubernetes.local-tunnel-debug-provider": "",
+        "checkForMinikubeUpgrade": true,
+        "logsDisplay": "webview",
+        "imageBuildTool": "Docker"
+    },
+    "java.project.importOnFirstTimeStartup": "automatic",
+    "docker.showStartPage": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "explorer.confirmDelete": false,
+    "redhat.telemetry.enabled": false,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "workbench.startupEditor": "none",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[rust]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "matklad.rust-analyzer"
+    },
+    "rust-analyzer.updates.channel": "nightly",
+    "rust-analyzer.inlayHints.enable": true,
+    "editor.bracketPairColorization.enabled": true,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.enabled": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "errorLens.enabled": false,
+    "editor.minimap.enabled": false,
+    "editor.suggest.preview": true,
+    "files.trimTrailingWhitespace": true,
+    "errorLens.exclude": [
+        "`main` function not found.*"
+    ],
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "go.toolsManagement.autoUpdate": true,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "rust-analyzer.checkOnSave.command": "clippy"
+}
