@@ -1,0 +1,13 @@
+{{- /* Checks if running interactively, which is not the case for GitHub Codespaces */ -}}
+{{- $interactive := stdinIsATTY -}}
+
+{{- $username := "Omegaice" -}}
+{{- if hasKey . "github.username" -}}
+{{-   $username = .github.username -}}
+{{- else -}}
+{{-   $username = promptString "GitHub Username" $username -}}
+{{- end -}}
+
+data:
+  github:
+    username: "{{$username}}"
