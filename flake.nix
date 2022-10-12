@@ -11,6 +11,10 @@
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     alejandra.url = "github:kamadorueda/alejandra/3.0.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
+    omegaice = {
+      url = "github:omegaice/nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -18,6 +22,7 @@
     nixpkgs,
     home-manager,
     alejandra,
+    omegaice,
     ...
   }: let
     username = "omegaice";
@@ -28,8 +33,7 @@
       overlays = [
         self.overlays.${system}
         alejandra.overlays.default
-        (import
-          ./pkgs/default.nix)
+        omegaice.overlays.default
       ];
     };
   in rec

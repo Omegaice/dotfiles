@@ -45,6 +45,21 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "flakeCompat": {
       "flake": false,
       "locked": {
@@ -135,6 +150,27 @@
         "type": "github"
       }
     },
+    "omegaice": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1665585745,
+        "narHash": "sha256-7wy6WtBOFo+wlajOGjuAqmQA99QVHB8u7tBn72/AF98=",
+        "owner": "omegaice",
+        "repo": "nixpkgs",
+        "rev": "b95133238d5b5cfdc96066a76fa77c79f3f0208c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "omegaice",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "rnix-lsp": {
       "inputs": {
         "naersk": "naersk",
@@ -160,6 +196,7 @@
         "alejandra": "alejandra",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
+        "omegaice": "omegaice",
         "rnix-lsp": "rnix-lsp"
       }
     },
