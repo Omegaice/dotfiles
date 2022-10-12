@@ -44,7 +44,7 @@
 
     # Language Servers
     nodePackages.bash-language-server # Bash
-    rnix-lsp # Nix 
+    rnix-lsp # Nix
     taplo-lsp # TOML
   ];
 
@@ -112,8 +112,8 @@
         update-home = "$HOME/.config/nixpkgs/update.sh";
         ls = "exa";
       };
-      sessionVariables = { 
-        EDITOR = "${pkgs.helix}/bin/hx"; 
+      sessionVariables = {
+        EDITOR = "${pkgs.helix}/bin/hx";
       };
     };
 
@@ -121,7 +121,7 @@
       enable = true;
     };
   };
-  
+
   services = {
     pueue.enable = true;
   };

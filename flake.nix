@@ -13,39 +13,43 @@
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, alejandra, ... }:
-    let
-      username = "omegaice";
-      system = "x86_64-linux";
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    alejandra,
+    ...
+  }: let
+    username = "omegaice";
+    system = "x86_64-linux";
 
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [
-          self.overlays.${system}
-          alejandra.overlays.default
-          (import
-            ./pkgs/default.nix)
-        ];
-      };
-    in
-    rec
-    {
-      overlays.${system} = final: prev: { };
-
-      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        modules = [
-          ./home.nix
-          {
-            programs.home-manager.enable = true;
-            home = {
-              stateVersion = "22.11";
-              username = "${username}";
-              homeDirectory = "/home/${username}";
-            };
-          }
-        ];
-      };
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [
+        self.overlays.${system}
+        alejandra.overlays.default
+        (import
+          ./pkgs/default.nix)
+      ];
     };
+  in rec
+  {
+    overlays.${system} = final: prev: {};
+
+    homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+
+      modules = [
+        ./home.nix
+        {
+          programs.home-manager.enable = true;
+          home = {
+            stateVersion = "22.11";
+            username = "${username}";
+            homeDirectory = "/home/${username}";
+          };
+        }
+      ];
+    };
+  };
 }

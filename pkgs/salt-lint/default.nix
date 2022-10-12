@@ -1,7 +1,7 @@
-{ lib
-, python3
+{
+  lib,
+  python3,
 }:
-
 python3.pkgs.buildPythonApplication rec {
   pname = "salt-lint";
   version = "0.8.0";
@@ -11,7 +11,7 @@ python3.pkgs.buildPythonApplication rec {
     sha256 = "wLIU3PAhvXLxn0fuZ1LP7xH5zOm1xN8HEfkGbMTpNKE=";
   };
 
-  propagatedBuildInputs = with python3.pkgs; [ pyyaml pathspec ];
+  propagatedBuildInputs = with python3.pkgs; [pyyaml pathspec];
 
   meta = with lib; {
     homepage = "https://github.com/warpnet/salt-lint";
