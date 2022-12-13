@@ -17,6 +17,7 @@
     delta
     fd
     git-cliff # Generate changelog file from git commits
+    hatch # Python package manager
     hck # Replacement for cut with some improvements
     hyperfine # CLI to benchmark programs
     httpie
@@ -25,10 +26,15 @@
     k6
     kondo
     kubectl
+    helm
+    kubevirt # CLI tool for KubeVirt
     lefthook
     manix
     mmv
     ncdu
+    nil
+    nixos-generators
+    nix-output-monitor
     ouch # (De)compression tool for multiple formats
     pandoc
     procs
@@ -52,6 +58,8 @@
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
+
+  manual.manpages.enable = false;
 
   programs = {
     # Tools
@@ -112,9 +120,15 @@
         update-home = "$HOME/.config/nixpkgs/update.sh";
         ls = "exa";
       };
+      defaultKeymap = "emacs";
       sessionVariables = {
         EDITOR = "${pkgs.helix}/bin/hx";
       };
+      initExtra = ''
+        bindkey  "^[[H"   beginning-of-line
+        bindkey  "^[[F"   end-of-line
+        bindkey  "^[[3~"  delete-char
+      '';
     };
 
     nushell = {
