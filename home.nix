@@ -23,18 +23,16 @@
     httpie
     iperf3
     just # Command runner
-    k6
+    k6 # http load testing
     kondo
-    kubectl
+    kubectl # Kubernetes
     helm
     kubevirt # CLI tool for KubeVirt
     lefthook
-    manix
     mmv
     ncdu
-    nil
-    nixos-generators
     nix-output-monitor
+    nurl # Generate fetcher for nix from URL
     ouch # (De)compression tool for multiple formats
     pandoc
     procs
@@ -42,21 +40,16 @@
     salt-lint
     shellcheck
     statix
-    taskwarrior
     taskwarrior-tui
     terraform
     tokei # Source code line counter
+    vermin # Python - Minimum version required by package
     yt-dlp
 
     # Language Servers
     nodePackages.bash-language-server # Bash
-    rnix-lsp # Nix
+    nil # Nix
     taplo-lsp # TOML
-  ];
-
-  # Setup Paths
-  home.sessionPath = [
-    "$HOME/.local/bin"
   ];
 
   manual.manpages.enable = false;
@@ -85,7 +78,14 @@
     gh.enableGitCredentialHelper = true;
 
     # Shell
-    starship.enable = true; # Prompt
+    starship = {
+      enable = true; # Prompt
+      settings = {
+        container = {
+          disabled = true;
+        };
+      };
+    };
     zoxide.enable = true; # Directory changer that attempts to guess based on history
     fzf.enable = true;
 
