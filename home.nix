@@ -7,7 +7,7 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    alejandra
+    alejandra # Nix Formatter
     btop
     broot
     csview
@@ -38,12 +38,12 @@
     ripgrep
     salt-lint
     shellcheck
-    statix
+    statix # Nix Linter
     taskwarrior-tui
     terraform
     tokei # Source code line counter
     vermin # Python - Minimum version required by package
-    yt-dlp
+    yt-dlp # Video Downloader
 
     # Language Servers
     nodePackages.bash-language-server # Bash
