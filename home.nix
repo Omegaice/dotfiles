@@ -10,7 +10,6 @@
     alejandra
     btop
     broot
-    chezmoi
     csview
     dasel
     dua
