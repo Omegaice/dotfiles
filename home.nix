@@ -25,6 +25,7 @@
     k6 # http load testing
     kondo
     kubectl # Kubernetes
+    kubectx
     helm
     kubevirt # CLI tool for KubeVirt
     lefthook
