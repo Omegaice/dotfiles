@@ -1,1 +1,4 @@
-changes
+.direnv
+result
+
+.pre-commit-config.yaml
