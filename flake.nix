@@ -37,6 +37,8 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
         ./home-manager
+        ./packages
+        flake-parts.flakeModules.easyOverlay
       ];
       systems = ["x86_64-linux" "aarch64-darwin"];
       perSystem = {

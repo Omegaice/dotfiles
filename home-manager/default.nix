@@ -7,6 +7,7 @@
     homeConfigurations."jsweet" = withSystem "x86_64-linux" (ctx @ {
       pkgs,
       inputs',
+      final,
       ...
     }:
       inputs.home-manager.lib.homeManagerConfiguration {
@@ -56,6 +57,7 @@
                 nurl # Generate fetcher for nix from URL
                 ouch # (De)compression tool for multiple formats
                 pandoc
+                final.pdm # Python dependency manager
                 procs
                 ripgrep
                 inputs'.omegaice.packages.salt-lint
