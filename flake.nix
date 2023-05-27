@@ -69,5 +69,11 @@
           ];
         };
       };
+      flake = {
+        templates.rust = {
+          path = ./templates/rust;
+          description = "";
+        };
+      };
     };
 }
