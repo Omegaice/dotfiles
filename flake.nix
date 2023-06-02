@@ -49,10 +49,13 @@
       perSystem = {
         pkgs,
         self',
+        inputs',
         system,
         ...
       }: {
         formatter = pkgs.alejandra;
+
+        packages.home-manager = inputs'.home-manager.packages.home-manager;
 
         checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {

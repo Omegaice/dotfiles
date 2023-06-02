@@ -29,7 +29,7 @@
 
               # Packages that should be installed to the user profile.
               home.packages = with pkgs; [
-                inputs'.alejandra.packages.default # Nix Formatter
+                pkgs.alejandra # Nix Formatter
                 broot
                 csview
                 #dasel
@@ -151,6 +151,19 @@
                 btop = {
                   # Top Replacement
                   enable = true;
+                };
+
+                zellij = {
+                  enable = true;
+                  settings = {
+                    pane_frames = false;
+                    default_layout = "compact";
+                    ui = {
+                      pane_frames = {
+                        hide_session_name = true;
+                      };
+                    };
+                  };
                 };
 
                 # Editors
