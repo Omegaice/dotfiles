@@ -20,10 +20,6 @@
       url = "github:kamadorueda/alejandra/3.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    omegaice = {
-      url = "github:omegaice/nixpkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,7 +31,6 @@
     home-manager,
     system-manager,
     alejandra,
-    omegaice,
     pre-commit-hooks,
     ...
   }:
@@ -53,10 +48,6 @@
         system,
         ...
       }: {
-        formatter = pkgs.alejandra;
-
-        packages.home-manager = inputs'.home-manager.packages.home-manager;
-
         checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
             src = ./.;
@@ -67,14 +58,52 @@
           };
         };
 
+        apps = {
+          install = let
+            installer = pkgs.writeShellApplication {
+              name = "installer";
+
+              runtimeInputs = builtins.attrValues {
+                inherit
+                  (pkgs)
+                  nix-output-monitor
+                  nvd
+                  busybox
+                  ;
+              };
+
+              text = ''
+                set -x
+
+                # Build new environment
+                PACKAGE="path:''${HOME}/.config/nixpkgs#homeConfigurations.''${USER}.activationPackage"
+                nom build --no-link "$PACKAGE"
+
+                # Remove any old environments
+                OLD_PROFILE="''${HOME}/.local/state/nix/profiles/profile/home-manager"
+                if [[ -d "$OLD_PROFILE" ]]; then
+                  nvd diff "$$OLD_PROFILE" "$(nix path-info "$PACKAGE")"
+                  nix profile remove "$(nix profile list | grep home-manager-path | awk '{print $1};')"
+                fi
+
+                # Activate new environment
+                "$(nix path-info "$PACKAGE")"/activate
+              '';
+            };
+          in {
+            type = "app";
+            program = "${installer}/bin/installer";
+          };
+        };
+
+        formatter = pkgs.alejandra;
+
         devShells.default = pkgs.mkShell {
           inherit (self'.checks.pre-commit-check) shellHook;
 
-          buildInputs = with pkgs; [
-            just
-            nvd
-            nix-output-monitor
-          ];
+          buildInputs =
+            builtins.attrValues {
+            };
         };
       };
       flake = {
