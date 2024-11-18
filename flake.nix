@@ -14,16 +14,27 @@
       flake = false;
     };
 
+    alejandra = {
+      url = "github:kamadorueda/alejandra/3.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    helix.url = "github:helix-editor/helix";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    system-manager = {
-      url = "github:numtide/system-manager";
+
+    nix-index-db = {
+      url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    alejandra = {
-      url = "github:kamadorueda/alejandra/3.1.0";
+
+    yazi.url = "github:sxyazi/yazi";
+
+    system-manager = {
+      url = "github:numtide/system-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     pre-commit-hooks = {
@@ -34,9 +45,11 @@
 
   outputs = inputs @ {
     flake-parts,
+    helix,
     home-manager,
     system-manager,
     alejandra,
+    yazi,
     pre-commit-hooks,
     ...
   }:

@@ -1,4 +1,17 @@
 {
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
+  xdg.configFile."atuin/config.toml" = let
+    cfg = config.programs.atuin;
+    tomlFormat = pkgs.formats.toml {};
+  in
+    lib.mkForce {
+      text = lib.replaceStrings ["\\\\"] ["\\"] (builtins.readFile (tomlFormat.generate "atuin-config" cfg.settings));
+    };
+
   programs.atuin = {
     enable = true;
     settings = {

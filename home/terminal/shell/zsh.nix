@@ -4,7 +4,7 @@
   ...
 }: {
   programs.zsh = {
-    enable = lib.debug.traceVal true true;
+    enable = true;
     autosuggestion.enable = true;
     autocd = true;
     defaultKeymap = "emacs";

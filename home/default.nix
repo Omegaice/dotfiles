@@ -1,12 +1,11 @@
-{...}: {
-  imports = [
-  ];
-
+{
   home = {
     username = "jsweet";
     homeDirectory = "/home/jsweet";
-    stateVersion = "25.04";
+    stateVersion = "25.05";
     extraOutputsToInstall = ["doc" "devdoc"];
+
+    enableNixpkgsReleaseCheck = false;
   };
 
   # disable manuals as nmd fails to build often
