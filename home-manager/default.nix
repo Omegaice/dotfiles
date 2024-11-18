@@ -16,14 +16,12 @@
 
         modules = [
           ./package-diff
-          {
-            programs.home-manager.enable = true;
-            home = {
-              stateVersion = "23.05";
-              username = "jsweet";
-              homeDirectory = "/home/jsweet";
-            };
-          }
+          ../home
+          ../home/editor/helix
+          ../home/shell/autin.nix
+          ../home/shell/starship.nix
+          ../home/shell/zoxide.nix
+          ../home/shell/zsh.nix
           (
             let
               worktree-clone = pkgs.writeShellApplication {
@@ -174,15 +172,6 @@
                   };
 
                   # Shell
-                  starship = {
-                    enable = true; # Prompt
-                    settings = {
-                      container = {
-                        disabled = true;
-                      };
-                    };
-                  };
-                  zoxide.enable = true; # Directory changer that attempts to guess based on history
                   fzf.enable = true;
 
                   bat = {
@@ -249,40 +238,6 @@
                         ];
                       };
                     };
-                  };
-
-                  # Editors
-                  helix = {
-                    enable = true;
-                    settings = {
-                      editor = {
-                        text-width = 120;
-                        soft-wrap.enable = true;
-                        lsp.display-inlay-hints = true;
-                      };
-                    };
-                    languages = {
-                      "nix" = {
-                        formatter = {
-                          command = "alejandra";
-                        };
-                      };
-                    };
-                  };
-
-                  zsh = {
-                    enable = true;
-                    autocd = true;
-                    defaultKeymap = "emacs";
-                    sessionVariables = {
-                      EDITOR = "${pkgs.helix}/bin/hx";
-                    };
-                    initExtra = ''
-                      bindkey  "^[[H"   beginning-of-line
-                      bindkey  "^[[F"   end-of-line
-                      bindkey  "^[[3~"  delete-char
-                      alias cat="bat"
-                    '';
                   };
                 };
               }

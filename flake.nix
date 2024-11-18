@@ -2,12 +2,18 @@
   description = "Home Manager configuration";
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
     };
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +23,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     alejandra = {
-      url = "github:kamadorueda/alejandra/3.0.0";
+      url = "github:kamadorueda/alejandra/3.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     pre-commit-hooks = {
@@ -36,6 +42,7 @@
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
+        ./host
         ./home-manager
         ./packages
         flake-parts.flakeModules.easyOverlay
