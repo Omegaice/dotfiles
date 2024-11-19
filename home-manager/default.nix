@@ -36,7 +36,6 @@
 
               # Packages that should be installed to the user profile.
               home.packages = with pkgs; [
-                pkgs.alejandra # Nix Formatter
                 # broot
                 csview
                 #dasel
@@ -69,7 +68,6 @@
                 ripgrep
                 #inputs'.omegaice.packages.salt-lint
                 # shellcheck
-                # statix # Nix Linter
                 # taskwarrior-tui
                 # terraform
                 # tokei # Source code line counter

@@ -1,26 +1,104 @@
 {
   self,
   inputs,
+  withSystem,
   ...
 }: {
-  flake.nixosConfigurations = let
-    inherit (inputs.nixpkgs.lib) nixosSystem;
-
-    # get these into the module system
-    specialArgs = {inherit inputs self;};
-  in {
-    t15g2 = nixosSystem {
-      inherit specialArgs;
-      modules = [
-        ./hardware-configuration.nix
-        ../../system/core/boot.nix
-        ../../system/core/default.nix
-        ../../system/hardware/bluetooth.nix
-        ../../system/hardware/fwupd.nix
-        ../../system/nix/default.nix
-      ];
-
-      networking.hostName = "t15g2"; # Define your hostname.
+  deploy.nodes.t15g2 = {
+    hostname = "10.42.1.224";
+    fastConnection = true;
+    interactiveSudo = true;
+    profiles = {
+      system = {
+        sshUser = "root";
+        path =
+          inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.t15g2;
+        user = "root";
+      };
     };
   };
+
+  flake.nixosConfigurations.t15g2 = withSystem "x86_64-linux" (ctx @ {
+    config,
+    inputs',
+    ...
+  }:
+    inputs.nixpkgs.lib.nixosSystem {
+      # Expose `packages`, `inputs` and `inputs'` as module arguments.
+      # Use specialArgs permits use in `imports`.
+      # Note: if you publish modules for reuse, do not rely on specialArgs, but
+      # on the flake scope instead. See also https://flake.parts/define-module-in-separate-file.html
+      specialArgs = {
+        inherit inputs inputs';
+        inherit (ctx.config) packages;
+      };
+      modules = [
+        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t15-intel-gen2
+        ./hardware-configuration.nix
+        ../../system/core
+        ../../system/core/boot.nix
+        ../../system/hardware/bluetooth.nix
+        ../../system/hardware/fwupd.nix
+        ../../system/nix
+        ../../system/programs
+        ../../system/programs/fonts.nix
+        ../../system/programs/home-manager.nix
+        ../../system/programs/hyprland.nix
+        ../../system/programs/qt.nix
+        # ../../system/programs/xdg.nix
+        ../../system/programs/zfs.nix
+        ../../system/services/greetd.nix
+        ../../system/services/pipewire.nix
+        ../../system/services/power.nix
+        ../../system/services/ssh.nix
+        ({
+          config,
+          lib,
+          packages,
+          pkgs,
+          ...
+        }: {
+          networking.hostName = "t15g2"; # Define your hostname.
+
+          users.users.omegaice = {
+            isNormalUser = true;
+            home = "/home/omegaice";
+            extraGroups = ["wheel" "networkmanager" "input"];
+            shell = pkgs.zsh;
+          };
+
+          home-manager = {
+            extraSpecialArgs = {inherit inputs inputs';};
+            users."omegaice".imports = [
+              {
+                home.username = "omegaice";
+              }
+              ../../home
+              ../../home/gtk.nix
+              ../../home/editor/helix
+              ../../home/programs/anyrun.nix
+              ../../home/programs/firefox
+              ../../home/programs/media
+              ../../home/programs/vscode
+              ../../home/programs/wayland/hyprland/default.nix
+              ../../home/programs/wayland/hyprland/settings.nix
+              ../../home/programs/wayland/dunst.nix
+              ../../home/programs/wayland/hyprlock.nix
+              ../../home/programs/wayland/waybar.nix
+              ../../home/terminal/emulators/kitty.nix
+              ../../home/terminal/programs/bat.nix
+              ../../home/terminal/programs/btop.nix
+              ../../home/terminal/programs/git.nix
+              ../../home/terminal/programs/nix.nix
+              ../../home/terminal/programs/xdg.nix
+              ../../home/terminal/programs/yazi.nix
+              ../../home/terminal/programs/zellij.nix
+              ../../home/terminal/shell/atuin.nix
+              ../../home/terminal/shell/zsh.nix
+              ../../home/terminal/shell/starship.nix
+            ];
+          };
+        })
+      ];
+    });
 }

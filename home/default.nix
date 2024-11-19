@@ -1,7 +1,11 @@
 {
+  lib,
+  config,
+  ...
+}: {
   home = {
-    username = "jsweet";
-    homeDirectory = "/home/jsweet";
+    username = lib.mkDefault "jsweet";
+    homeDirectory = "/home/${config.home.username}";
     stateVersion = "25.05";
     extraOutputsToInstall = ["doc" "devdoc"];
 

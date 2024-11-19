@@ -22,6 +22,20 @@
         "\\\\[200~"
       ];
       filter_mode_shell_up_key_binding = "directory";
+      daemon.enabled = true;
     };
+  };
+
+  systemd.user.services.atuin = {
+    Unit = {
+      Description = "Atuin daemon";
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = "${lib.getExe config.programs.atuin.package} daemon";
+    };
+
+    Install = {WantedBy = ["default.target"];};
   };
 }

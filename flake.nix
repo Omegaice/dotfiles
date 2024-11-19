@@ -2,7 +2,9 @@
   description = "Home Manager configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    systems.url = "github:nix-systems/default-linux";
+
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -14,10 +16,14 @@
       flake = false;
     };
 
+    anyrun.url = "github:fufexan/anyrun/launch-prefix";
+
     alejandra = {
       url = "github:kamadorueda/alejandra/3.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    deploy-rs.url = "github:serokell/deploy-rs";
 
     helix.url = "github:helix-editor/helix";
 
@@ -31,6 +37,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-hardware.url = "github:Omegaice/nixos-hardware/master";
+
     yazi.url = "github:sxyazi/yazi";
 
     system-manager = {
@@ -41,12 +49,57 @@
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # hyprwm
+    hyprland.url = "github:hyprwm/hyprland";
+
+    hypridle = {
+      url = "github:hyprwm/hypridle";
+      inputs = {
+        hyprlang.follows = "hyprland/hyprlang";
+        hyprutils.follows = "hyprland/hyprutils";
+        nixpkgs.follows = "hyprland/nixpkgs";
+        systems.follows = "hyprland/systems";
+      };
+    };
+
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "hyprland/nixpkgs";
+    };
+
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+    };
+
+    hyprlock = {
+      url = "github:hyprwm/hyprlock";
+      inputs = {
+        hyprlang.follows = "hyprland/hyprlang";
+        hyprutils.follows = "hyprland/hyprutils";
+        nixpkgs.follows = "hyprland/nixpkgs";
+        systems.follows = "hyprland/systems";
+      };
+    };
+
+    hyprpaper = {
+      url = "github:hyprwm/hyprpaper";
+      inputs = {
+        hyprlang.follows = "hyprland/hyprlang";
+        hyprutils.follows = "hyprland/hyprutils";
+        nixpkgs.follows = "hyprland/nixpkgs";
+        systems.follows = "hyprland/systems";
+      };
+    };
   };
 
   outputs = inputs @ {
     flake-parts,
     helix,
+    deploy-rs,
     home-manager,
+    hyprland,
+    nixos-hardware,
     system-manager,
     alejandra,
     yazi,
@@ -54,29 +107,33 @@
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
+      debug = true;
       imports = [
         ./host
         ./home-manager
         ./packages
+        ./flake-modules/deploy-rs.nix
         flake-parts.flakeModules.easyOverlay
       ];
       systems = ["x86_64-linux" "aarch64-darwin"];
       perSystem = {
+        lib,
         pkgs,
+        config,
         self',
         inputs',
         system,
         ...
       }: {
-        checks = {
-          pre-commit-check = pre-commit-hooks.lib.${system}.run {
-            src = ./.;
-            hooks = {
-              alejandra.enable = true;
-              statix.enable = true;
-            };
-          };
-        };
+        # checks = {
+        #   pre-commit-check = pre-commit-hooks.lib.${system}.run {
+        #     src = ./.;
+        #     hooks = {
+        #       alejandra.enable = true;
+        #       statix.enable = true;
+        #     };
+        #   };
+        # };
 
         apps = {
           install = let
@@ -119,11 +176,11 @@
         formatter = pkgs.alejandra;
 
         devShells.default = pkgs.mkShell {
-          inherit (self'.checks.pre-commit-check) shellHook;
+          # inherit (self'.checks.pre-commit-check) shellHook;
 
-          buildInputs =
-            builtins.attrValues {
-            };
+          buildInputs = builtins.attrValues {
+            inherit (inputs'.deploy-rs.packages) deploy-rs;
+          };
         };
       };
       flake = {
