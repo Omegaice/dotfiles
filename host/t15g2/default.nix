@@ -77,14 +77,6 @@
 
           hardware = {
             nvidia.open = false;
-            graphics = {
-              extraPackages = with pkgs; [
-                nvidia-vaapi-driver
-              ];
-          #     powerManagement = {
-          #       finegrained = true;
-          #     };
-            };
           };
 
           home-manager = {
@@ -92,11 +84,9 @@
             users."omegaice".imports = [
               {
                 home.username = "omegaice";
-                services.blueman-applet.enable = true;
                 home.packages = with pkgs; [
                   nil
                   pavucontrol
-                  zed-editor
                 ];
                 # wayland.windowManager.hyprland.settings = {
                 #   env = [
@@ -119,16 +109,17 @@
               ../../home/programs/wayland/dunst.nix
               ../../home/programs/wayland/hyprlock.nix
               ../../home/programs/wayland/waybar.nix
+              ../../home/services/bluetooth.nix
               ../../home/terminal/emulators/kitty.nix
               ../../home/terminal/programs/bat.nix
               ../../home/terminal/programs/btop.nix
+              ../../home/terminal/programs/eza.nix
               ../../home/terminal/programs/git.nix
               ../../home/terminal/programs/nix.nix
               ../../home/terminal/programs/xdg.nix
               ../../home/terminal/programs/yazi.nix
               ../../home/terminal/programs/zellij.nix
               ../../home/terminal/shell/atuin.nix
-              ../../home/terminal/shell/eza.nix
               ../../home/terminal/shell/nix-index.nix
               ../../home/terminal/shell/zsh.nix
               ../../home/terminal/shell/starship.nix

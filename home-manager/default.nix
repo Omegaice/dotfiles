@@ -21,6 +21,7 @@
           ../home/editor/helix
           ../home/terminal/programs/bat.nix
           ../home/terminal/programs/btop.nix
+          ../home/terminal/programs/eza.nix
           ../home/terminal/programs/git.nix
           ../home/terminal/programs/nix.nix
           ../home/terminal/programs/xdg.nix
