@@ -40,6 +40,7 @@
         ../../system/hardware/bluetooth.nix
         ../../system/hardware/fwupd.nix
         ../../system/nix
+        ../../system/network
         ../../system/programs
         ../../system/programs/fonts.nix
         ../../system/programs/home-manager.nix
@@ -47,6 +48,7 @@
         ../../system/programs/qt.nix
         # ../../system/programs/xdg.nix
         ../../system/programs/zfs.nix
+        ../../system/programs/gaming
         ../../system/services/greetd.nix
         ../../system/services/pipewire.nix
         ../../system/services/power.nix
@@ -60,6 +62,8 @@
         }: {
           networking.hostName = "t15g2"; # Define your hostname.
 
+          boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
+
           users.users.omegaice = {
             isNormalUser = true;
             home = "/home/omegaice";
@@ -67,11 +71,40 @@
             shell = pkgs.zsh;
           };
 
+          environment.systemPackages = with pkgs; [
+            libva-utils
+          ];
+
+          hardware = {
+            nvidia.open = false;
+            graphics = {
+              extraPackages = with pkgs; [
+                nvidia-vaapi-driver
+              ];
+          #     powerManagement = {
+          #       finegrained = true;
+          #     };
+            };
+          };
+
           home-manager = {
             extraSpecialArgs = {inherit inputs inputs';};
             users."omegaice".imports = [
               {
                 home.username = "omegaice";
+                services.blueman-applet.enable = true;
+                home.packages = with pkgs; [
+                  nil
+                  pavucontrol
+                  zed-editor
+                ];
+                # wayland.windowManager.hyprland.settings = {
+                #   env = [
+                #     "LIBVA_DRIVER_NAME,nvidia"
+                #     "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+                #     "NVD_BACKEND,direct"
+                #   ];
+                # };
               }
               ../../home
               ../../home/gtk.nix
@@ -80,6 +113,7 @@
               ../../home/programs/firefox
               ../../home/programs/media
               ../../home/programs/vscode
+              ../../home/programs/zoom.nix
               ../../home/programs/wayland/hyprland/default.nix
               ../../home/programs/wayland/hyprland/settings.nix
               ../../home/programs/wayland/dunst.nix
@@ -94,6 +128,8 @@
               ../../home/terminal/programs/yazi.nix
               ../../home/terminal/programs/zellij.nix
               ../../home/terminal/shell/atuin.nix
+              ../../home/terminal/shell/eza.nix
+              ../../home/terminal/shell/nix-index.nix
               ../../home/terminal/shell/zsh.nix
               ../../home/terminal/shell/starship.nix
             ];

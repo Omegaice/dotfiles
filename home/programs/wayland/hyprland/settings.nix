@@ -5,9 +5,6 @@
       # "HYPRCURSOR_THEME,${cursorName}"
       # "HYPRCURSOR_SIZE,${toString pointer.size}"
 
-      "XDG_CURRENT_DESKTOP,Hyprland"
-      "XDG_SESSION_DESKTOP,Hyprland"
-      "XDG_SESSION_TYPE,wayland"
       "CLUTTER_BACKEND,wayland"
       "GDK_BACKEND,wayland,x11,*"
       "GDK_SCALE,1"
@@ -83,6 +80,10 @@
       ];
     };
 
+    cursor = {
+      no_hardware_cursors = true;
+    };
+
     group = {
       groupbar = {
         font_size = 10;
@@ -95,12 +96,14 @@
     };
 
     input = {
-      kb_layout = "ro";
+      numlock_by_default = true;
 
       # focus change on cursor move
       follow_mouse = 1;
       accel_profile = "flat";
-      touchpad.scroll_factor = 0.1;
+      touchpad = {
+        scroll_factor = 0.75;
+      };
     };
 
     dwindle = {
@@ -109,7 +112,14 @@
       preserve_split = true;
     };
 
+    device = {
+      name = "synps/2-synaptics-touchpad";
+      sensitivity = 1.5;
+    };
+
     misc = {
+      disable_splash_rendering = true;
+
       # disable auto polling for config file changes
       disable_autoreload = false;
 
@@ -121,8 +131,6 @@
       # enable variable refresh rate (effective depending on hardware)
       vrr = 1;
     };
-
-    render.direct_scanout = true;
 
     # touchpad gestures
     gestures = {
