@@ -68,7 +68,7 @@
           users.users.omegaice = {
             isNormalUser = true;
             home = "/home/omegaice";
-            extraGroups = ["wheel" "networkmanager" "input"];
+            extraGroups = ["wheel" "networkmanager" "input" "docker"];
             shell = pkgs.zsh;
           };
 
