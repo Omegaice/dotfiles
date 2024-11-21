@@ -115,6 +115,7 @@
               ../../home/terminal/programs/btop.nix
               ../../home/terminal/programs/eza.nix
               ../../home/terminal/programs/git.nix
+              ../../home/terminal/programs/jq.nix
               ../../home/terminal/programs/nix.nix
               ../../home/terminal/programs/xdg.nix
               ../../home/terminal/programs/yazi.nix

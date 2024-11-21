@@ -23,11 +23,13 @@
           ../home/terminal/programs/btop.nix
           ../home/terminal/programs/eza.nix
           ../home/terminal/programs/git.nix
+          ../home/terminal/programs/jq.nix
           ../home/terminal/programs/nix.nix
           ../home/terminal/programs/xdg.nix
           ../home/terminal/programs/yazi.nix
           ../home/terminal/programs/zellij.nix
           ../home/terminal/shell/atuin.nix
+          ../home/terminal/shell/nix-index.nix
           ../home/terminal/shell/starship.nix
           ../home/terminal/shell/zoxide.nix
           ../home/terminal/shell/zsh.nix
@@ -84,16 +86,6 @@
               programs = {
                 # Shell
                 fzf.enable = true;
-
-                eza = {
-                  enable = true;
-                  icons = "auto";
-                  git = true;
-                };
-
-                jq.enable = true;
-
-                nix-index.enable = true;
               };
             }
           )
