@@ -49,6 +49,7 @@
         # ../../system/programs/xdg.nix
         ../../system/programs/zfs.nix
         ../../system/programs/gaming
+        ../../system/services/docker.nix
         ../../system/services/greetd.nix
         ../../system/services/pipewire.nix
         ../../system/services/power.nix
@@ -113,6 +114,7 @@
               ../../home/terminal/emulators/kitty.nix
               ../../home/terminal/programs/bat.nix
               ../../home/terminal/programs/btop.nix
+              ../../home/terminal/programs/duf.nix
               ../../home/terminal/programs/eza.nix
               ../../home/terminal/programs/git.nix
               ../../home/terminal/programs/jq.nix

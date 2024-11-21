@@ -3,6 +3,10 @@
   config,
   ...
 }: {
+  imports = [
+    ./modules
+  ];
+
   home = {
     username = lib.mkDefault "jsweet";
     homeDirectory = "/home/${config.home.username}";

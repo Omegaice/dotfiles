@@ -1,5 +1,5 @@
 {
-  programs.jq = {
+  programs.duf = {
     enable = true;
   };
 }
