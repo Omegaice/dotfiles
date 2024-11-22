@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./modules
+    ./xdg.nix
   ];
 
   home = {

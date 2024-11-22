@@ -51,14 +51,15 @@ in {
         source = jsonFormat.generate "bitwarden-cli-config" settings;
       };
 
-      # home.activation.writeBitwardenCliConfig = let
-      #   configPath = "${config.xdg.configHome}/Bitwarden CLI/data.json";
-      # in {
-      #   after = ["writeBoundary"];
-      #   before = [];
-      #   data = ''
-      #     install -m 0640 "$(readlink ${configPath})" ${configPath}
-      #   '';
-      # };
+      home.activation.writeBitwardenCliConfig = let
+        configPath = "${config.xdg.configHome}/Bitwarden CLI/data.json";
+      in {
+        after = ["writeBoundary"];
+        before = [];
+        data = ''
+          TARGET=$(readlink "${configPath}")
+          install -m 0640 "$TARGET" "${configPath}"
+        '';
+      };
     };
 }
