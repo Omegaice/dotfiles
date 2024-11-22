@@ -11,5 +11,8 @@
     enable = true;
   };
 
-  systemd.services.NetworkManager-wait-online.serviceConfig.ExecStart = ["" "${pkgs.networkmanager}/bin/nm-online -q"];
+#  systemd = {
+#    targets.network-online.wantedBy = pkgs.lib.mkForce []; # Normally ["multi-user.target"]
+#    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce []; # Normally ["network-online.target"]
+#  };
 }

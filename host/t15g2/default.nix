@@ -39,6 +39,7 @@
         ../../system/core/boot.nix
         ../../system/hardware/bluetooth.nix
         ../../system/hardware/fwupd.nix
+        ../../system/hardware/power.nix
         ../../system/nix
         ../../system/network
         ../../system/programs
@@ -101,8 +102,10 @@
               ../../home/gtk.nix
               ../../home/editor/helix
               ../../home/programs/anyrun.nix
+              ../../home/programs/bitwarden.nix
               ../../home/programs/firefox
               ../../home/programs/media
+              ../../home/programs/slack.nix
               ../../home/programs/vscode
               ../../home/programs/zoom.nix
               ../../home/programs/wayland/hyprland/default.nix

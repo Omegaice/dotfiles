@@ -87,7 +87,7 @@ in {
 
     gh = {
       enable = true;
-      extensions = [pkgs.gh-actions-cache];
+      extensions = with pkgs; [gh-actions-cache gh-dash];
     };
 
     git-cliff = {
