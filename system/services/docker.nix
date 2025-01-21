@@ -6,4 +6,7 @@
       enable = true;
     };
   };
+
+  # Enable CUDA inside containers
+  hardware.nvidia-container-toolkit.enable = true;
 }
