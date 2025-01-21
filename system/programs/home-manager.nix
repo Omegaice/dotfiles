@@ -6,6 +6,6 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    backupFileExtension = ".bak";
+    backupFileExtension = "bak";
   };
 }
