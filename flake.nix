@@ -23,9 +23,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    helix.url = "github:helix-editor/helix";
+    helix = {
+      url = "github:helix-editor/helix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -45,13 +51,21 @@
       url = "github:numtide/system-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    umu = {
+      url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # hyprwm
-    hyprland.url = "github:hyprwm/hyprland";
+    hyprland = {
+      url = "github:hyprwm/hyprland";
+    };
 
     hypridle = {
       url = "github:hyprwm/hypridle";
@@ -65,11 +79,18 @@
 
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "hyprland/nixpkgs";
+      inputs = {
+        nixpkgs.follows = "hyprland/nixpkgs";
+      };
     };
 
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
+      inputs = {
+        hyprland.follows = "hyprland";
+        nixpkgs.follows = "hyprland/nixpkgs";
+        systems.follows = "hyprland/systems";
+      };
     };
 
     hyprlock = {
@@ -104,6 +125,7 @@
     alejandra,
     yazi,
     pre-commit-hooks,
+    umu,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
