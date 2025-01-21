@@ -34,7 +34,7 @@ in {
         "$mod, Q, exec, kitty"
         "$mod, C, killactive"
         "$mod, M, exit"
-        "$mod, E, exec, $fileManager"
+        "$mod, E, exec, nautilus"
         "$mod, V, togglefloating"
         "$mod, R, exec, $menu"
         "$mod, P, pseudo, # dwindle"
