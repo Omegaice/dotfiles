@@ -20,7 +20,8 @@
       # finalize startup
       "uwsm finalize"
 
-      "uwsm app -- waybar"
+      "clipse -listen"
+
       # set cursor for HL itself
       # "hyprctl setcursor ${cursorName} ${toString pointer.size}"
       "hyprlock"
