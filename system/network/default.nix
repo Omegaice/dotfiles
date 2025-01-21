@@ -11,8 +11,8 @@
     enable = true;
   };
 
-#  systemd = {
-#    targets.network-online.wantedBy = pkgs.lib.mkForce []; # Normally ["multi-user.target"]
-#    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce []; # Normally ["network-online.target"]
-#  };
+  #  systemd = {
+  #    targets.network-online.wantedBy = pkgs.lib.mkForce []; # Normally ["multi-user.target"]
+  #    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce []; # Normally ["network-online.target"]
+  #  };
 }

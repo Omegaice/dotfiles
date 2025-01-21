@@ -8,9 +8,10 @@
     localNetworkGameTransfers.openFirewall = true;
 
     package = pkgs.steam.override {
-      extraPkgs = (pkgs: with pkgs; [
-        gamemode
-      ]);
+      extraPkgs = pkgs:
+        with pkgs; [
+          gamemode
+        ];
     };
   };
 }

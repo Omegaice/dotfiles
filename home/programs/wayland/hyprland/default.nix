@@ -13,8 +13,7 @@
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.default;
 
-    systemd = {
-      enable = false;
-    };
+    # Disable as we use uswm
+    systemd.enable = false;
   };
 }

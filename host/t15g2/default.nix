@@ -1,8 +1,11 @@
-
-{ flake-parts-lib, self, withSystem, ... }: let
-  inherit (flake-parts-lib) importApply;
-in
 {
+  flake-parts-lib,
+  self,
+  withSystem,
+  ...
+}: let
+  inherit (flake-parts-lib) importApply;
+in {
   imports = [
     ./deploy.nix
     ./nixosConfiguration.nix
@@ -13,7 +16,7 @@ in
   #   inherit withSystem;
   # };
 }
-
 # nixpkgs = import inputs.nixpkgs {
 #       config.cudaSupport = true;
 #     };
+
