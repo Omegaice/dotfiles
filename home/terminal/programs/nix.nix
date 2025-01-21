@@ -5,6 +5,7 @@
     alejandra
     deadnix
     statix
+    cachix
   ];
 
   programs.direnv = {
