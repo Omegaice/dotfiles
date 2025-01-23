@@ -14,6 +14,7 @@
       # "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
       # "SDL_VIDEODRIVER,wayland"
       # "MOZ_ENABLE_WAYLAND,1"
+      "KWIN_DRM_USE_MODIFIERS,0"
     ];
 
     exec-once = [
@@ -28,7 +29,9 @@
     ];
 
     monitor = [
-      "eDP-1, preferred, auto, 1"
+      "eDP-1, preferred, auto, 1" # Internal
+
+      "DP-9, preferred, auto-up, 1" # Work
     ];
 
     general = {
@@ -45,7 +48,7 @@
     decoration = {
       rounding = 16;
       blur = {
-        enabled = true;
+        enabled = false;
         brightness = 1.0;
         contrast = 1.0;
         noise = 0.01;
@@ -139,8 +142,6 @@
     };
 
     xwayland.force_zero_scaling = true;
-
-    debug.disable_logs = false;
 
     plugin = {
       hyprbars = {
