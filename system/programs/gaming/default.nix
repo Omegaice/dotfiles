@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   imports = [
     ./steam.nix
     ./umu.nix
@@ -9,5 +9,10 @@
     settings = {
       general.inhibit_screensaver = 0;
     };
+  };
+
+  environment.systemPackages = builtins.attrValues {
+    inherit (pkgs) winetricks;
+    inherit (pkgs.wineWowPackages) stable;
   };
 }

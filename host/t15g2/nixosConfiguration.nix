@@ -61,7 +61,6 @@
 
           environment.systemPackages = with pkgs; [
             libva-utils
-            wineWowPackages.stable
           ];
 
           hardware = {
