@@ -11,11 +11,6 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
-
     anyrun.url = "github:fufexan/anyrun/launch-prefix";
 
     alejandra = {
