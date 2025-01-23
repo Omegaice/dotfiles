@@ -127,7 +127,6 @@
       debug = true;
       imports = [
         ./host
-        ./home-manager
         ./packages
         ./flake-modules/deploy-rs.nix
         flake-parts.flakeModules.easyOverlay
