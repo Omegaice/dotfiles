@@ -15,6 +15,9 @@
       # "SDL_VIDEODRIVER,wayland"
       # "MOZ_ENABLE_WAYLAND,1"
       "KWIN_DRM_USE_MODIFIERS,0"
+
+      "LIBVA_DRIVER_NAME,nvidia"
+      "__GLX_VENDOR_LIBRARY_NAME,nvidia"
     ];
 
     exec-once = [

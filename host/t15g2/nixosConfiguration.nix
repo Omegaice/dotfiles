@@ -28,6 +28,7 @@
         ../../system/nix
         ../../system/network
         ../../system/programs
+        ../../system/programs/appimage.nix
         ../../system/programs/fonts.nix
         ../../system/programs/home-manager.nix
         ../../system/programs/hyprland.nix
@@ -37,8 +38,10 @@
         ../../system/programs/gaming
         ../../system/services/docker.nix
         ../../system/services/greetd.nix
+        ../../system/services/gvfs.nix
         ../../system/services/pipewire.nix
         ../../system/services/power.nix
+        ../../system/services/seahorse.nix
         ../../system/services/ssh.nix
         ./home.nix
         ({
@@ -61,11 +64,20 @@
 
           environment.systemPackages = with pkgs; [
             libva-utils
+            webcord
+            samba4Full
+            brightnessctl
           ];
+
+          environment.etc.hosts.mode = "0644";
 
           hardware = {
             nvidia = {
               open = false;
+              powerManagement = {
+                enable = true;
+                finegrained = false;
+              };
               prime = {
                 offload.enable = false;
                 sync.enable = true;

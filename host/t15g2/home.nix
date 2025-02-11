@@ -13,6 +13,7 @@
           nil
           pavucontrol
         ];
+        services.gnome-keyring.enable = true;
       }
       ../../home
       ../../home/gtk.nix
@@ -44,6 +45,7 @@
       ../../home/terminal/programs/xdg.nix
       ../../home/terminal/programs/yazi.nix
       ../../home/terminal/programs/zellij.nix
+      ../../home/terminal/programs/zoxide.nix
       ../../home/terminal/shell/atuin.nix
       ../../home/terminal/shell/nix-index.nix
       ../../home/terminal/shell/zsh.nix

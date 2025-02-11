@@ -98,6 +98,15 @@
       };
     };
 
+    hyprpolkitagent = {
+      url = "github:hyprwm/hyprpolkitagent";
+      inputs = {
+        hyprutils.follows = "hyprland/hyprutils";
+        nixpkgs.follows = "hyprland/nixpkgs";
+        systems.follows = "hyprland/systems";
+      };
+    };
+
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";
       inputs = {
@@ -115,6 +124,7 @@
     deploy-rs,
     home-manager,
     hyprland,
+    hyprpolkitagent,
     nixos-hardware,
     system-manager,
     alejandra,

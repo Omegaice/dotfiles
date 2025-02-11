@@ -51,6 +51,8 @@
       # C++
       twxs.cmake
       ms-vscode.cmake-tools
+      # Shell
+      jetmartin.bats
     ];
   };
 }

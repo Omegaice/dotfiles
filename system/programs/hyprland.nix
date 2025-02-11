@@ -16,6 +16,10 @@
 
   security.pam.services.hyprlock = {};
 
+  environment.systemPackages = [
+    inputs.hyprpolkitagent.packages.${pkgs.system}.hyprpolkitagent
+  ];
+
   # tell Electron/Chromium to run on Wayland
   # environment.variables.NIXOS_OZONE_WL = "1";
 }
