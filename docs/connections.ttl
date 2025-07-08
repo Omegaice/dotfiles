@@ -1,0 +1,225 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Nix Configuration Import Graph
+# Generated from /home/jsweet/.config/nixpkgs
+
+# Entry Point
+<file:///home/jsweet/.config/nixpkgs/flake.nix>
+    rdfs:label "flake.nix" ;
+    rdfs:comment "Main flake configuration" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/host/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/packages/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/flake-modules/deploy-rs.nix> .
+
+# Host Configurations
+<file:///home/jsweet/.config/nixpkgs/host/default.nix>
+    rdfs:label "host/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/host/crc-49/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/host/t15g2/default.nix> .
+
+# CRC-49 (WSL) Configuration
+<file:///home/jsweet/.config/nixpkgs/host/crc-49/default.nix>
+    rdfs:label "crc-49/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/host/crc-49/wsl.nix> .
+
+<file:///home/jsweet/.config/nixpkgs/host/crc-49/wsl.nix>
+    rdfs:label "WSL Host Configuration" ;
+    rdfs:comment "Home Manager configuration for WSL environment" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/editor/helix/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/bat.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/btop.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/duf.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/eza.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/git.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/jq.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/nix.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/nodejs.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/rg.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/xdg.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/yazi.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/zellij.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/zoxide.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/atuin.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/nix-index.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/zsh.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/starship.nix> .
+
+# T15G2 (Physical Machine) Configuration
+<file:///home/jsweet/.config/nixpkgs/host/t15g2/default.nix>
+    rdfs:label "t15g2/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/host/t15g2/deploy.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/host/t15g2/nixosConfiguration.nix> .
+
+<file:///home/jsweet/.config/nixpkgs/host/t15g2/nixosConfiguration.nix>
+    rdfs:label "T15G2 NixOS Configuration" ;
+    rdfs:comment "Full NixOS system configuration for ThinkPad T15 Gen2" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/host/t15g2/hardware-configuration.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/core/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/core/boot.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/hardware/bluetooth.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/hardware/fwupd.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/hardware/power.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/nix/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/network/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/appimage.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/fonts.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/home-manager.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/hyprland.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/qt.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/zfs.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/gaming/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/services/docker.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/services/greetd.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/services/gvfs.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/services/pipewire.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/services/power.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/services/seahorse.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/services/ssh.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/host/t15g2/home.nix> .
+
+<file:///home/jsweet/.config/nixpkgs/host/t15g2/home.nix>
+    rdfs:label "T15G2 Home Manager Configuration" ;
+    rdfs:comment "User-specific configuration for omegaice on T15G2" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/gtk.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/editor/helix/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/anyrun.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/bitwarden.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/file-manager.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/firefox/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/media/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/slack.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/vscode/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/zoom.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/clipboard.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/dunst.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/hyprland/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/hyprlock.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/waybar.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/services/bluetooth.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/emulators/ghostty.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/emulators/kitty.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/bat.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/btop.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/duf.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/eza.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/git.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/jq.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/nix.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/xdg.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/yazi.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/zellij.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/programs/zoxide.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/atuin.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/nix-index.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/starship.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/zsh.nix> .
+
+# Home Configuration
+<file:///home/jsweet/.config/nixpkgs/home/default.nix>
+    rdfs:label "home/default.nix" ;
+    rdfs:comment "Base home configuration" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/modules/default.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/xdg.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/steam.nix> .
+
+<file:///home/jsweet/.config/nixpkgs/home/modules/default.nix>
+    rdfs:label "home/modules/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/modules/programs/default.nix> .
+
+<file:///home/jsweet/.config/nixpkgs/home/modules/programs/default.nix>
+    rdfs:label "home/modules/programs/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/modules/programs/bitwarden-cli.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/modules/programs/duf.nix> .
+
+# Terminal Configuration
+<file:///home/jsweet/.config/nixpkgs/home/terminal/default.nix>
+    rdfs:label "terminal/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/terminal/programs> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/starship.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/terminal/shell/zsh.nix> .
+
+# System Configuration
+<file:///home/jsweet/.config/nixpkgs/system/nix/default.nix>
+    rdfs:label "system/nix/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/system/nix/nh.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/nix/nixpkgs.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/nix/substituters.nix> .
+
+<file:///home/jsweet/.config/nixpkgs/system/programs/gaming/default.nix>
+    rdfs:label "system/programs/gaming/default.nix" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/system/programs/gaming/steam.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/system/programs/gaming/umu.nix> .
+
+# Wayland/Hyprland Configuration
+<file:///home/jsweet/.config/nixpkgs/home/programs/wayland/hyprland/default.nix>
+    rdfs:label "Hyprland Configuration" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/hyprland/settings.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/hyprland/binds.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/wayland/hyprland/rules.nix> .
+
+# VSCode Extensions
+<file:///home/jsweet/.config/nixpkgs/home/programs/vscode/default.nix>
+    rdfs:label "VSCode Configuration" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/programs/vscode/extensions/default.nix> .
+
+<file:///home/jsweet/.config/nixpkgs/home/programs/vscode/extensions/default.nix>
+    rdfs:label "VSCode Extensions" ;
+    dcterms:requires <file:///home/jsweet/.config/nixpkgs/home/programs/vscode/extensions/catppuccin.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/vscode/extensions/even-better-toml.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/vscode/extensions/gitlens.nix> ,
+                     <file:///home/jsweet/.config/nixpkgs/home/programs/vscode/extensions/rust-analyzer.nix> .
+
+# Package Definitions
+<file:///home/jsweet/.config/nixpkgs/packages/default.nix>
+    rdfs:label "Custom Packages" ;
+    rdfs:comment "Custom package definitions for yazi plugins" .
+
+# Standalone Modules
+<file:///home/jsweet/.config/nixpkgs/flake-modules/deploy-rs.nix>
+    rdfs:label "Deploy-rs Configuration" ;
+    rdfs:comment "Deployment configuration for remote NixOS systems" .
+
+# Currently Unused/Unreferenced Modules
+<file:///home/jsweet/.config/nixpkgs/home-manager/default.nix>
+    rdfs:label "home-manager/default.nix" .
+
+<file:///home/jsweet/.config/nixpkgs/home-manager/package-diff/default.nix>
+    rdfs:label "home-manager/package-diff/default.nix" .
+
+<file:///home/jsweet/.config/nixpkgs/home/programs/media/mpv.nix>
+    rdfs:label "MPV Media Player Configuration" .
+
+<file:///home/jsweet/.config/nixpkgs/home/terminal/emulators/wezterm.nix>
+    rdfs:label "WezTerm Terminal Configuration" .
+
+<file:///home/jsweet/.config/nixpkgs/home/terminal/shell/nushell.nix>
+    rdfs:label "Nushell Configuration" .
+
+<file:///home/jsweet/.config/nixpkgs/home/terminal/shell/zoxide.nix>
+    rdfs:label "Zoxide Shell Integration" ;
+    rdfs:comment "Duplicate - also exists in terminal/programs/" .
+
+<file:///home/jsweet/.config/nixpkgs/packages/pdm/default.nix>
+    rdfs:label "PDM Package Definition" .
+
+<file:///home/jsweet/.config/nixpkgs/packages/yazi-glow.nix>
+    rdfs:label "Yazi Glow Plugin Package" .
+
+<file:///home/jsweet/.config/nixpkgs/packages/yazi-hexyl.nix>
+    rdfs:label "Yazi Hexyl Plugin Package" .
+
+<file:///home/jsweet/.config/nixpkgs/system/default.nix>
+    rdfs:label "system/default.nix" .
+
+<file:///home/jsweet/.config/nixpkgs/system/programs/uwsm.nix>
+    rdfs:label "UWSM (Universal Wayland Session Manager)" .
+
+<file:///home/jsweet/.config/nixpkgs/system/programs/xdg.nix>
+    rdfs:label "System XDG Configuration" .
+
+<file:///home/jsweet/.config/nixpkgs/system/virtualization/default.nix>
+    rdfs:label "Virtualization Configuration" .

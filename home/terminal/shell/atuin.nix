@@ -25,7 +25,7 @@
       daemon = {
         enabled = true;
         systemd_socket = true;
-        socket_path = "/home/omegaice/.local/share/atuin/atuin.sock";
+        socket_path = "${config.xdg.dataHome}/atuin/atuin.sock";
       };
     };
   };
