@@ -5,7 +5,6 @@
 }: {
   imports = [
     ./modules
-    ./xdg.nix
     ./programs/steam.nix
   ];
 

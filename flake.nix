@@ -5,6 +5,7 @@
     systems.url = "github:nix-systems/default-linux";
 
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -120,6 +121,7 @@
 
   outputs = inputs @ {
     flake-parts,
+    nixpkgs-unstable,
     helix,
     deploy-rs,
     home-manager,

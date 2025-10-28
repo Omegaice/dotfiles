@@ -24,7 +24,10 @@
         ../../system/core/boot.nix
         ../../system/hardware/bluetooth.nix
         ../../system/hardware/fwupd.nix
+        ../../system/hardware/monitoring.nix
+        ../../system/hardware/nvidia.nix
         ../../system/hardware/power.nix
+        ../../system/hardware/thunderbolt.nix
         ../../system/nix
         ../../system/network
         ../../system/programs
@@ -44,16 +47,8 @@
         ../../system/services/seahorse.nix
         ../../system/services/ssh.nix
         ./home.nix
-        ({
-          config,
-          lib,
-          packages,
-          pkgs,
-          ...
-        }: {
-          networking.hostName = "t15g2"; # Define your hostname.
-
-          boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
+        ({pkgs, ...}: {
+          networking.hostName = "t15g2";
 
           users.users.omegaice = {
             isNormalUser = true;
@@ -62,28 +57,16 @@
             shell = pkgs.zsh;
           };
 
+          # Machine-specific packages
           environment.systemPackages = with pkgs; [
-            libva-utils
-            webcord
-            samba4Full
-            brightnessctl
+            webcord # Discord client
+            brightnessctl # Laptop screen brightness control
+            #samba4Full
           ];
 
           environment.etc.hosts.mode = "0644";
 
-          hardware = {
-            nvidia = {
-              open = false;
-              powerManagement = {
-                enable = true;
-                finegrained = false;
-              };
-              prime = {
-                offload.enable = false;
-                sync.enable = true;
-              };
-            };
-          };
+          programs.nix-ld.enable = true;
         })
       ];
     });

@@ -13,7 +13,7 @@
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.default;
 
-    # Disable as we use uswm
+    # Disable as we use uwsm
     systemd.enable = false;
   };
 }

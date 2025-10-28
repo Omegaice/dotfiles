@@ -5,10 +5,10 @@
     inputs',
     system,
     pkgs,
-    final,
     ...
   }: {
-    overlayAttrs = {
+    # Define packages first
+    packages = {
       pdm = pkgs.pdm.overrideAttrs (prev: {
         postUnpack =
           (prev.postUnpack or "")
@@ -19,6 +19,11 @@
 
       yazi-glow = pkgs.callPackage ./yazi-glow.nix {};
       yazi-hexyl = pkgs.callPackage ./yazi-hexyl.nix {};
+    };
+
+    # Then export them as overlay attributes (for easyOverlay)
+    overlayAttrs = {
+      inherit (config.packages) pdm yazi-glow yazi-hexyl;
 
       pythonPackagesExtensions =
         pkgs.pythonPackagesExtensions
@@ -26,10 +31,6 @@
           (pself: pprev: {
           })
         ];
-    };
-
-    packages = {
-      inherit (final) pdm yazi-glow yazi-hexyl;
     };
   };
 }

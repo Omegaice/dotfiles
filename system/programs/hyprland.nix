@@ -18,6 +18,7 @@
 
   environment.systemPackages = [
     inputs.hyprpolkitagent.packages.${pkgs.system}.hyprpolkitagent
+    pkgs.libva-utils # vainfo - verify NVIDIA VA-API hardware acceleration works with Hyprland
   ];
 
   # tell Electron/Chromium to run on Wayland

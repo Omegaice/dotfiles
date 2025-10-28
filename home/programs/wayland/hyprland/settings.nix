@@ -33,8 +33,20 @@
 
     monitor = [
       "eDP-1, preferred, auto, 1" # Internal
-
       "DP-9, preferred, auto-up, 1" # Work
+    ];
+
+    workspace = [
+      "1, monitor:eDP-1, default:true"
+      "2, monitor:DP-9, default:true"
+      "3, monitor:eDP-1"
+      "4, monitor:eDP-1"
+      "5, monitor:eDP-1"
+      "6, monitor:DP-9"
+      "7, monitor:DP-9"
+      "8, monitor:DP-9"
+      "9, monitor:DP-9"
+      "10, monitor:DP-9"
     ];
 
     general = {
@@ -139,10 +151,9 @@
     };
 
     # touchpad gestures
-    gestures = {
-      workspace_swipe = true;
-      workspace_swipe_forever = true;
-    };
+    gesture = [
+      "3, horizontal, workspace"  # 3-finger horizontal swipe to switch workspaces
+    ];
 
     xwayland.force_zero_scaling = true;
 
