@@ -1032,22 +1032,6 @@
         "type": "github"
       }
     },
-    "nixos-hardware": {
-      "locked": {
-        "lastModified": 1732067334,
-        "narHash": "sha256-1fJDYH6ZGAfJuSFrbMj3WlltgjZYmzHa7jySWjKjK6Y=",
-        "owner": "Omegaice",
-        "repo": "nixos-hardware",
-        "rev": "fb94fe13660f420ce61058120017bc0b6719ce38",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Omegaice",
-        "ref": "master",
-        "repo": "nixos-hardware",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1730200266,
@@ -1188,7 +1172,6 @@
         "hyprpaper": "hyprpaper",
         "hyprpolkitagent": "hyprpolkitagent",
         "nix-index-db": "nix-index-db",
-        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pre-commit-hooks": "pre-commit-hooks_2",

@@ -16,8 +16,10 @@
       # "MOZ_ENABLE_WAYLAND,1"
       "KWIN_DRM_USE_MODIFIERS,0"
 
-      "LIBVA_DRIVER_NAME,nvidia"
-      "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+      # NVIDIA variables removed - use Intel iGPU by default for offload mode
+      # For NVIDIA rendering, use: nvidia-offload <application>
+      # "LIBVA_DRIVER_NAME,nvidia"  # Removed - forces all apps to NVIDIA
+      # "__GLX_VENDOR_LIBRARY_NAME,nvidia"  # Removed - keeps GPU always on
     ];
 
     exec-once = [

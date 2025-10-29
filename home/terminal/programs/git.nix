@@ -37,19 +37,16 @@ in {
       enable = true;
       lfs.enable = true;
 
-      difftastic = {
-        enable = true;
-        background = "dark";
-      };
+      settings = {
+        user = {
+          name = "Omegaice";
+          email = "950526+Omegaice@users.noreply.github.com";
+        };
 
-      userName = "Omegaice";
-      userEmail = "950526+Omegaice@users.noreply.github.com";
+        alias = {
+          clone-worktree = "!bash ${lib.getExe worktree-clone}";
+        };
 
-      aliases = {
-        clone-worktree = "!bash ${lib.getExe worktree-clone}";
-      };
-
-      extraConfig = {
         branch.sort = "-committerdate";
         core = {
           fileMode = false;
@@ -83,6 +80,12 @@ in {
         ];
         status.submoduleSummary = true;
       };
+    };
+
+    difftastic = {
+      enable = true;
+      git.enable = true;
+      options.background = "dark";
     };
 
     gh = {

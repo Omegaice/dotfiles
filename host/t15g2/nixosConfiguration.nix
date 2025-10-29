@@ -18,12 +18,13 @@
         inherit (ctx.config) packages;
       };
       modules = [
-        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t15-intel-gen2
         ./hardware-configuration.nix
         ../../system/core
         ../../system/core/boot.nix
+        ../../system/hardware/backlight.nix
         ../../system/hardware/bluetooth.nix
         ../../system/hardware/fwupd.nix
+        ../../system/hardware/intel-tigerlake.nix
         ../../system/hardware/monitoring.nix
         ../../system/hardware/nvidia.nix
         ../../system/hardware/power.nix
@@ -42,6 +43,7 @@
         ../../system/services/docker.nix
         ../../system/services/greetd.nix
         ../../system/services/gvfs.nix
+        ../../system/services/logind.nix
         ../../system/services/pipewire.nix
         ../../system/services/power.nix
         ../../system/services/seahorse.nix
@@ -53,7 +55,7 @@
           users.users.omegaice = {
             isNormalUser = true;
             home = "/home/omegaice";
-            extraGroups = ["wheel" "networkmanager" "input" "docker"];
+            extraGroups = ["wheel" "networkmanager" "input" "docker" "video"];
             shell = pkgs.zsh;
           };
 

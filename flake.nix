@@ -39,8 +39,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-hardware.url = "github:Omegaice/nixos-hardware/master";
-
     yazi.url = "github:sxyazi/yazi";
 
     system-manager = {
@@ -127,7 +125,6 @@
     home-manager,
     hyprland,
     hyprpolkitagent,
-    nixos-hardware,
     system-manager,
     alejandra,
     yazi,

@@ -31,7 +31,7 @@ in {
     bind =
       [
         # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        "$mod, Q, exec, kitty"
+        "$mod, Q, exec, ghostty"
         "$mod, C, killactive"
         "$mod, M, exit"
         "$mod, E, exec, nautilus"

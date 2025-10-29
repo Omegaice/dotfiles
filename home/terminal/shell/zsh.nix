@@ -9,7 +9,7 @@
     autosuggestion.enable = true;
     autocd = true;
     defaultKeymap = "emacs";
-    initExtra = ''
+    initContent = ''
       bindkey  "^[[H"   beginning-of-line
       bindkey  "^[[F"   end-of-line
       bindkey  "^[[3~"  delete-char

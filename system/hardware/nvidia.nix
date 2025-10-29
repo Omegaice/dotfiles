@@ -1,33 +1,52 @@
 {pkgs, ...}: {
-  # Enable NVIDIA proprietary drivers
   services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
-    # Use proprietary driver (better performance/stability than open)
+    # Proprietary driver has better performance/stability than open
     open = false;
 
-    # Enable power management for better battery life
+    modesetting.enable = false;
+
     powerManagement = {
       enable = true;
-      finegrained = false;
+      finegrained = true;
     };
 
-    # Hybrid graphics: PRIME sync mode
-    # Both Intel iGPU and NVIDIA dGPU active simultaneously
-    # Display output from NVIDIA, synchronized with Intel for better compatibility
     prime = {
-      offload.enable = false;
-      sync.enable = true;
+      # PCI bus IDs from: lspci | grep VGA
+      # 00:02.0 = Intel UHD Graphics
+      # 01:00.0 = NVIDIA RTX 3080 Mobile
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+
+      offload = {
+        enable = true;
+        enableOffloadCmd = true; # Provides nvidia-offload wrapper command
+      };
+
+      sync.enable = false; # Sync mode keeps dGPU always powered on
     };
   };
 
-  # Preserve video memory allocations across suspend/resume
-  # Required for NVIDIA GPU to properly resume from sleep
-  boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
+  # Kernel parameters automatically added by NixOS nvidia module:
+  # - nvidia.NVreg_PreserveVideoMemoryAllocations=1 (from powerManagement.enable)
+  # - nvidia-drm.modeset=1 (from prime.offload.enable OR modesetting.enable)
+  # - nvidia-drm.fbdev=1 (driver >= 545)
+  #
+  # Note: nvidia-drm.modeset=1 keeps nvidia-drm driver loaded, preventing full
+  # GPU power-down. This is a NixOS design requirement for PRIME offload mode.
 
-  # NVIDIA GPU monitoring and diagnostic tools
   environment.systemPackages = with pkgs; [
-    mesa-demos # glxinfo/glxgears - OpenGL/Vulkan info and testing
-    nvtopPackages.full # Real-time GPU monitoring for both NVIDIA and Intel GPUs
+    mesa-demos # glxinfo/glxgears for testing
+    nvtopPackages.full # GPU monitoring (NVIDIA + Intel)
+
+    # Wrapper for running apps on dGPU: nvidia-offload steam
+    (pkgs.writeShellScriptBin "nvidia-offload" ''
+      export __NV_PRIME_RENDER_OFFLOAD=1
+      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+      export __GLX_VENDOR_LIBRARY_NAME=nvidia
+      export __VK_LAYER_NV_optimus=NVIDIA_only
+      exec "$@"
+    '')
   ];
 }

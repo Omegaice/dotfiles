@@ -41,6 +41,7 @@
       ../../home/programs/wayland/hyprland/settings.nix
       ../../home/programs/wayland/clipboard.nix
       ../../home/programs/wayland/dunst.nix
+      ../../home/programs/wayland/hypridle.nix
       ../../home/programs/wayland/hyprlock.nix
       ../../home/programs/wayland/waybar.nix
 

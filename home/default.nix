@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./modules
+    ../modules/home
     ./programs/steam.nix
   ];
 
