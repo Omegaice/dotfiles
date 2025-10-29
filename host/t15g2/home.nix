@@ -43,10 +43,13 @@
       ../../home/programs/wayland/dunst.nix
       ../../home/programs/wayland/hypridle.nix
       ../../home/programs/wayland/hyprlock.nix
+      ../../home/programs/wayland/screenshot.nix
+      ../../home/programs/wayland/swayosd.nix
       ../../home/programs/wayland/waybar.nix
 
       # Services
       ../../home/services/bluetooth.nix
+      ../../home/services/ghostty.nix
     ];
   };
 }

@@ -31,14 +31,21 @@ in {
     bind =
       [
         # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-        "$mod, Q, exec, ghostty"
+        "$mod, Q, exec, ghostty +new-window"
         "$mod, C, killactive"
         "$mod, M, exit"
         "$mod, E, exec, nautilus"
-        "$mod, V, togglefloating"
+        "$mod SHIFT, V, togglefloating"  # Moved from $mod V to make room for clipboard
+        "$mod, V, exec, ghostty --class=com.clipse -e clipse"  # Open clipboard manager
         "$mod, R, exec, $menu"
         "$mod, P, pseudo, # dwindle"
         "$mod, J, togglesplit, # dwindle"
+
+        # Screenshots using grimblast
+        ", Print, exec, grimblast --notify copy area"  # Select region → clipboard
+        "SHIFT, Print, exec, grimblast --notify save area"  # Select region → file
+        "ALT, Print, exec, grimblast --notify --cursor save active"  # Active window → file (with cursor)
+        "CTRL, Print, exec, grimblast --notify --cursor save screen"  # Full screen → file (with cursor)
       ]
       ++ workspaces;
 
@@ -53,19 +60,19 @@ in {
       ", XF86AudioPrev, exec, playerctl previous"
       ", XF86AudioNext, exec, playerctl next"
 
-      # volume
-      ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-      ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+      # volume (with OSD via swayosd-client)
+      ", XF86AudioMute, exec, swayosd-client --output-volume mute-toggle"
+      ", XF86AudioMicMute, exec, swayosd-client --input-volume mute-toggle"
     ];
 
     bindle = [
-      # volume
-      ", XF86AudioRaiseVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%+"
-      ", XF86AudioLowerVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%-"
+      # volume (with OSD via swayosd-client)
+      ", XF86AudioRaiseVolume, exec, swayosd-client --output-volume raise"
+      ", XF86AudioLowerVolume, exec, swayosd-client --output-volume lower"
 
-      # backlight
-      ", XF86MonBrightnessUp, exec, brightnessctl s +5%"
-      ", XF86MonBrightnessDown, exec, brightnessctl s -5%"
+      # backlight (with OSD via swayosd-client)
+      ", XF86MonBrightnessUp, exec, swayosd-client --brightness raise"
+      ", XF86MonBrightnessDown, exec, swayosd-client --brightness lower"
     ];
   };
 }
