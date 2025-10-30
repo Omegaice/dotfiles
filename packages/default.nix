@@ -17,20 +17,12 @@
           '';
       });
 
+      allmytoes = pkgs.callPackage ./allmytoes.nix {};
+      yazi-allmytoes = pkgs.callPackage ./yazi-allmytoes.nix {
+        allmytoes = config.packages.allmytoes;
+      };
       yazi-glow = pkgs.callPackage ./yazi-glow.nix {};
       yazi-hexyl = pkgs.callPackage ./yazi-hexyl.nix {};
-    };
-
-    # Then export them as overlay attributes (for easyOverlay)
-    overlayAttrs = {
-      inherit (config.packages) pdm yazi-glow yazi-hexyl;
-
-      pythonPackagesExtensions =
-        pkgs.pythonPackagesExtensions
-        ++ [
-          (pself: pprev: {
-          })
-        ];
     };
   };
 }

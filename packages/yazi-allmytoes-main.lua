@@ -1,0 +1,90 @@
+local options = ya.sync(
+	function(state)
+		return {
+			sizes = state.sizes,
+		}
+	end
+)
+
+local M = {}
+
+function M:peek(job)
+	local cache = ya.file_cache(job)
+	if not cache then
+		return
+	end
+
+	if not self:preload(job) then
+		return
+	end
+
+	local t = io.open(tostring(cache), "r")
+	if t == nil then return end
+	local thumb_path = t:read()
+	t:close()
+
+	local thumb = Url(thumb_path)
+	local _, err = ya.image_show(thumb, job.area)
+	ya.preview_widget(job, err and ui.Text(tostring(err)):area(job.area):wrap(ui.Wrap.YES))
+end
+
+function M:seek() end
+
+function M:setup(args)
+	self.sizes = args and args.sizes or { "n", "l", "x", "xx" }
+end
+
+function M:preload(job)
+	local cache = ya.file_cache(job)
+	if not cache or fs.cha(cache) then
+		return true
+	end
+
+	-- Helper function to check if a value exists in a list
+	local function has_value(tbl, val)
+		for _, v in ipairs(tbl) do
+			if v == val then return true end
+		end
+		return false
+	end
+
+	local opt_sizes = options().sizes
+
+	-- Determine which thumbnail size should be used in the preview
+	local all_sizes = { "n", "l", "x", "xx" }
+	local biggest_size = nil
+	for _, size in ipairs(all_sizes) do
+		if has_value(opt_sizes, size) then biggest_size = size end
+	end
+
+	local thumb_to_display = nil
+	-- Get plain file path from URL (strip file:// if present)
+	local file_path = tostring(job.file.url):gsub("^file://", "")
+
+	for _, size in ipairs(opt_sizes or all_sizes) do
+		local output = Command("allmytoes")
+			:arg({ "-s" .. size, file_path })
+			:stdout(Command.PIPED)
+			:stderr(Command.PIPED)
+			:output()
+
+		if output.status.success then
+			if size == biggest_size then
+				thumb_to_display = string.gsub(tostring(output.stdout), "\n", "")
+			end
+		else
+			ya.err(
+				"Could not obtain " .. size .. " thumbnail for " .. tostring(job.file.url)
+				.. ". allmytoes stderr: " .. tostring(output.stderr)
+			)
+		end
+	end
+
+	if thumb_to_display ~= nil then
+		return fs.write(cache, thumb_to_display) and true or false
+	else
+		return false
+	end
+end
+
+return M

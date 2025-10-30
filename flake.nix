@@ -138,7 +138,7 @@
         ./host
         ./packages
         ./flake-modules/deploy-rs.nix
-        flake-parts.flakeModules.easyOverlay
+        inputs.home-manager.flakeModules.home-manager
       ];
       systems = ["x86_64-linux" "aarch64-darwin"];
       perSystem = {

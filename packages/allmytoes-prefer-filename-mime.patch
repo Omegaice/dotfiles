@@ -1,0 +1,104 @@
+diff --git a/src/mimesniff.rs b/src/mimesniff.rs
+index c8b2141..1478722 100644
+--- a/src/mimesniff.rs
++++ b/src/mimesniff.rs
+@@ -1,84 +1,23 @@
+ use mime::Mime;
+-use std::fs::File;
+-use std::io::{self, Read, Seek};
++use std::io;
+ use std::path::Path;
+-use std::str::FromStr;
+-
+-/// The number of bytes to read initially when identifying a file's MIME type. Used in the [`mime_type`] function.
+-///
+-/// Rather than reading the entire file all at once into a [`BUF_SIZE`] buffer, it tends to be faster to read a small
+-/// chunk of the file and trying to identify that, proceeding with the larger buffer if that fails. Many file formats
+-/// can be identified with the first few dozen bytes, so the "happy path" will likely be taken in the majority of cases.
+-pub const INITIAL_BUF_SIZE: usize = 128;
+-
+-/// The number of bytes to read if the file couldn't be identified from its first [`INITIAL_BUF_SIZE`] bytes. Used in
+-/// the [`mime_type`] function.
+-pub const BUF_SIZE: usize = 8192;
+-
+-pub struct XgdMime {
+-    db: xdg_mime::SharedMimeInfo,
+-}
+-
+-impl XgdMime {
+-    fn init() -> Self {
+-        Self {
+-            db: xdg_mime::SharedMimeInfo::new(),
+-        }
+-    }
+-
+-    fn get_type(&self, data: &[u8]) -> Option<Mime> {
+-        self.db.get_mime_type_for_data(data).map(|m| m.0)
+-    }
+-}
+ 
+ /// Tries to identify the MIME type of a file from a given path.
++///
++/// Uses xdg-mime GuessBuilder with .path() to automatically combine filename,
++/// metadata, and content detection. GuessBuilder prioritizes filename extensions
++/// over magic bytes, which is critical for RAW image formats (ARW, CR2, NEF) that
++/// are TIFF containers but should be detected as their specific RAW type rather
++/// than generic image/tiff.
+ pub fn mime_type(path: &Path) -> io::Result<Option<Mime>> {
+-    let mut buffer = [0; INITIAL_BUF_SIZE];
+-    let mut file = File::open(path)?;
+-    let db = XgdMime::init();
++    let db = xdg_mime::SharedMimeInfo::new();
+ 
+-    // read a small amount to start with
++    // GuessBuilder.path() handles everything: filename, metadata, and content
++    // It intelligently determines how much data to read and properly weighs
++    // all detection methods (extension, magic bytes, content analysis)
++    let guess = db.guess_mime_type()
++        .path(path)
++        .guess();
+ 
+-    let mut read = io::Result::Ok(0);
+-
+-    for _ in 0..3 {
+-        // try to read the file up to 3 times, retrying if interrupted, bailing otherwise
+-        file.rewind()?;
+-        read = file.read(&mut buffer);
+-        match read {
+-            Err(ref e) if e.kind() == io::ErrorKind::Interrupted => continue,
+-            Err(_) | Ok(_) => break,
+-        }
+-    }
+-
+-    let read = read?;
+-    let r = db.get_type(&buffer);
+-
+-    if read < INITIAL_BUF_SIZE {
+-        // the file is smaller than INITIAL_BUF_SIZE - there's no point reading it again
+-        return Ok(r);
+-    }
+-
+-    let r = r.filter(|mime|
+-		// some MIME types should be investigated further, reading up to BUF_SIZE even if they've been determined already
+-		// one such type is XML - there's many more specific types that can be determined by reading further (such as SVG)
+-		mime != &mime::TEXT_XML
+-			// another is ZIP - many file formats (DOCX, ODT, JAR...) are just ZIP files with particular data structures.
+-			// determining that a file is in one of the MS office formats in particular requires looking quite far into the
+-			// file.
+-			&& mime != &Mime::from_str("application/zip").unwrap()
+-			// doc/ppt/xls files are a subset of what's known as an "OLE2 compound document storage", at least according to
+-			// shared-mime-info. if a pre-OOXML era MS office file is scanned and identified as x-ole-storage, reading further
+-			// will allow it to be detected correctly as the appropriate filetype.
+-			&& mime != &Mime::from_str("application/x-ole-storage").unwrap());
+-
+-    if r.is_some() {
+-        return Ok(r);
+-    }
+-
+-    // attempt to read up to BUF_SIZE bytes of the file.
+-    let mut buffer = [0; BUF_SIZE];
+-    file.rewind()?;
+-    file.read_exact(&mut buffer)?;
+-    Ok(db.get_type(&buffer))
++    Ok(Some(guess.mime_type().clone()))
+ }

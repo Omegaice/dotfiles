@@ -1,10 +1,13 @@
 {
   inputs,
   pkgs,
+  packages,
   ...
 }: {
   home-manager = {
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {
+      inherit inputs packages;
+    };
 
     users."omegaice".imports = [
       {
