@@ -5,14 +5,16 @@
     systems.url = "github:nix-systems/default-linux";
 
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
-    anyrun.url = "github:fufexan/anyrun/launch-prefix";
+    anyrun = {
+      url = "github:fufexan/anyrun/launch-prefix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     alejandra = {
       url = "github:kamadorueda/alejandra/3.1.0";
@@ -39,15 +41,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    yazi.url = "github:sxyazi/yazi";
-
-    system-manager = {
-      url = "github:numtide/system-manager";
+    yazi = {
+      url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
+    system-manager = {
+      url = "github:numtide/system-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -119,7 +119,6 @@
 
   outputs = inputs @ {
     flake-parts,
-    nixpkgs-unstable,
     helix,
     deploy-rs,
     home-manager,
@@ -128,12 +127,10 @@
     system-manager,
     alejandra,
     yazi,
-    pre-commit-hooks,
     umu,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      debug = true;
       imports = [
         ./host
         ./packages

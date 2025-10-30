@@ -4,23 +4,11 @@
   pkgs,
   ...
 }: {
-  xdg.configFile."atuin/config.toml" = let
-    cfg = config.programs.atuin;
-    tomlFormat = pkgs.formats.toml {};
-  in
-    lib.mkForce {
-      text = lib.replaceStrings ["\\\\"] ["\\"] (builtins.readFile (tomlFormat.generate "atuin-config" cfg.settings));
-    };
-
   programs.atuin = {
     enable = true;
     settings = {
       style = "compact";
       inline_height = "16";
-      history_filter = [
-        # Weird pasting errors
-        "\\\\[200~"
-      ];
       filter_mode_shell_up_key_binding = "directory";
       daemon = {
         enabled = true;
@@ -28,6 +16,25 @@
         socket_path = "${config.xdg.dataHome}/atuin/atuin.sock";
       };
     };
+  };
+
+  # Override config to add history_filter with proper backslash escaping
+  # Write config directly as text to avoid TOML generator escaping issues
+  # Note: ''\\ in Nix multiline string → \ in file (TOML escaped backslash)
+  xdg.configFile."atuin/config.toml" = lib.mkForce {
+    text = ''
+      style = "compact"
+      inline_height = 16
+      filter_mode_shell_up_key_binding = "directory"
+
+      # Filter out weird pasting errors (ESC[200~ bracketed paste escape sequence)
+      history_filter = ["\\[200~"]
+
+      [daemon]
+      enabled = true
+      systemd_socket = true
+      socket_path = "${config.xdg.dataHome}/atuin/atuin.sock"
+    '';
   };
 
   systemd.user = {
