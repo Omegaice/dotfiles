@@ -44,6 +44,7 @@
     yazi = {
       url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
 
     system-manager = {
@@ -53,6 +54,12 @@
 
     umu = {
       url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Rust
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -121,6 +128,7 @@
     flake-parts,
     helix,
     deploy-rs,
+    rust-overlay,
     home-manager,
     hyprland,
     hyprpolkitagent,
