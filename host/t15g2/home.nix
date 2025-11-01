@@ -34,8 +34,10 @@
       ../../home/programs/bitwarden.nix
       ../../home/programs/file-manager.nix
       ../../home/programs/firefox
+      ../../home/programs/mangohud.nix
       ../../home/programs/media
       ../../home/programs/slack.nix
+      ../../home/programs/steam.nix
       ../../home/programs/vscode
       ../../home/programs/zoom.nix
 

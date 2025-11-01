@@ -11,6 +11,7 @@
       extraPkgs = pkgs:
         with pkgs; [
           gamemode
+          mangohud # Performance overlay (FPS, temps, GPU/CPU usage)
         ];
     };
   };

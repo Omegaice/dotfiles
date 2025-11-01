@@ -375,4 +375,4 @@ zpool status
 
 ---
 
-*Hardware specifications collected via system detection on 2025-10-28 running NixOS with Linux kernel 6.12.54*
+*Hardware specifications collected via system detection running NixOS with Linux kernel 6.12.54*

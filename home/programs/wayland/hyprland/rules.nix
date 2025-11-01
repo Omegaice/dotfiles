@@ -15,6 +15,17 @@
       # Size: 960x540 (16:9 aspect ratio matching desktop displays)
       "float, class:(com.clipse)"
       "size 960 540, class:(com.clipse)"
+
+      # Gaming - Allow tearing for reduced input lag (VRR enabled in settings.nix)
+      # Steam games
+      "immediate, class:^(steam_app_).*"
+
+      # Heroic Games Launcher games
+      "immediate, class:^(heroic).*"
+      "immediate, title:^(.*)Heroic.*$"
+
+      # Wine/Proton games (catch-all)
+      "immediate, class:^(wine).*"
     ];
   };
 }

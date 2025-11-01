@@ -20,7 +20,7 @@
                 home.packages = with pkgs; [
                   nil
                 ];
-                
+
                 targets.genericLinux.enable = true;
             }
             ../../home
@@ -33,7 +33,7 @@
             ../../home/terminal/programs/jq.nix
             ../../home/terminal/programs/nix.nix
             ../../home/terminal/programs/nodejs.nix
-            ../../home/terminal/programs/rg.nix
+            ../../home/terminal/programs/rg.nixhomeManagerConfiguration
             ../../home/terminal/programs/xdg.nix
             ../../home/terminal/programs/yazi.nix
             ../../home/terminal/programs/zellij.nix

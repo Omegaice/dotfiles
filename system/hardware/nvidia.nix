@@ -38,6 +38,6 @@
 
   environment.systemPackages = with pkgs; [
     mesa-demos # glxinfo/glxgears for testing
-    nvtopPackages.full # GPU monitoring (NVIDIA + Intel)
+    #nvtopPackages.full # GPU monitoring (NVIDIA + Intel)
   ];
 }

@@ -12,7 +12,7 @@
   };
 
   environment.systemPackages = builtins.attrValues {
-    inherit (pkgs) winetricks;
+    inherit (pkgs) winetricks heroic;
     inherit (pkgs.wineWowPackages) stable;
   };
 }

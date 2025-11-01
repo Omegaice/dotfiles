@@ -2,7 +2,6 @@
 
 **System:** Lenovo ThinkPad T15g Gen 2i (20YTS0EV00)
 **Use Case:** Desktop Replacement, Development Workstation, Gaming Machine
-**Date:** 2025-10-28
 
 ---
 
@@ -171,7 +170,7 @@ These are close enough that you might not need scaling. But if text feels too sm
 - **Fn lock:** Some ThinkPads let you swap Fn key behavior (press F5 for brightness vs Fn+F5). This is personal preference. Default should be Fn+F5 (explicit).
 - **Function key priority:** Fn-as-modifier vs function-as-default. For developers, function keys (F1-F12) as default is better (debugging, IDE shortcuts). For general users, media keys as default is better.
 
-### OSD Implementation (Completed 2025-10-29)
+### OSD Implementation
 
 **Decision: swayosd**
 
@@ -304,7 +303,7 @@ Some apps over-notify. You should be able to:
 
 **File Management:**
 - **Consistent location:** ~/Pictures/Screenshots/ (not ~/screenshot.png in random places)
-- **Filename format:** `screenshot_2025-10-28_14-32-15.png` (sortable, descriptive)
+- **Filename format:** `screenshot_YYYY-MM-DD_HH-MM-SS.png` (sortable, descriptive)
 - **Notification with preview:** "Screenshot saved to..." with thumbnail and "Copy path" button.
 
 **Best Tools for Wayland:**
@@ -813,6 +812,14 @@ Your CPU can turbo to 4.6GHz. Gamemode ensures it does when gaming (not throttle
 
 **Keybinding:**
 - Shift+F12 (default) toggles overlay
+- Shift+F1 cycles FPS limits (0, 60, 120, 144)
+
+**Implementation Notes:**
+- Configuration in `home/programs/mangohud.nix`
+- GPU load color thresholds: white → orange@60% → red@90%
+- Top-left position, 3-column layout, semi-transparent background
+- Shows: FPS, frametime graph, GPU (temp/power/load), CPU (temp/power), VRAM/RAM
+- Gamemode integration indicator
 
 **Recommendation:** Install, enable for competitive/performance-critical games, disable for story-driven games where immersion matters.
 
@@ -1262,6 +1269,5 @@ Implementation priority should be based on:
 
 ---
 
-*Last Updated: 2025-10-28*
 *System: Lenovo ThinkPad T15g Gen 2i (20YTS0EV00)*
 *Configuration Repository: /home/omegaice/.config/nixpkgs*

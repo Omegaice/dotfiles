@@ -5,49 +5,155 @@ AI assistant guidance for working with this NixOS/Home Manager configuration rep
 ## Repository Architecture
 
 ### Directory Structure
+
 ```
 .
-├── flake.nix          # Main entry point, inputs/outputs
-├── home/              # User configs (works on NixOS + WSL)
-│   ├── editor/        # Helix configuration
-│   ├── programs/      # GUI apps (browsers, media players)
-│   ├── services/      # User services
-│   └── terminal/      # Terminal emulators, shells, CLI tools
+├── flake.nix          # Main entry point (uses flake-parts)
+├── modules/           # Custom module definitions
+│   └── home/          # Custom Home Manager modules
+├── home/              # Home Manager configurations
+│   ├── programs/      # GUI apps (per-host selection, no default.nix)
+│   └── terminal/      # CLI tools (universal, has default.nix)
 ├── host/              # Machine-specific configuration
-│   ├── t15g2/         # ThinkPad T15 Gen2 (NixOS)
-│   └── crc-49/        # WSL environment (Home Manager only)
-├── system/            # Reusable NixOS modules
-│   ├── core/          # Base system settings
-│   ├── hardware/      # Hardware subsystems (GPU, Bluetooth, etc.)
-│   ├── nix/           # Nix daemon configuration
-│   ├── programs/      # System-wide programs
-│   └── services/      # System services
-├── packages/          # Custom package definitions
-└── docs/              # Documentation (hardware specs, notes)
+├── system/            # NixOS modules
+└── packages/          # Custom packages (exported via easyOverlay)
 ```
 
-### Directory Decision Tree
+### Hosts
 
-**Where to put new configuration:**
+- **t15g2** - ThinkPad T15 Gen2 (NixOS + Home Manager)
+- **crc-49** - WSL environment (Home Manager only)
+
+### Custom Home Manager Modules
+
+Located in `modules/home/programs/`:
+- **programs.duf** - Better df with shell integration
+- **programs.bitwarden-cli** - Bitwarden CLI configuration
+
+### Key Pattern: home/programs/ Has NO default.nix
+
+This is **intentional** for per-host selection:
+- `home/programs/` - GUI apps, explicitly imported per host (no `default.nix`)
+- `home/terminal/` - CLI tools, universal across all hosts (has `default.nix`)
+
+This allows different hosts to pick different GUI applications while sharing terminal tooling.
+
+### Where to Put New Configuration
 
 ```
-Is it user-level config (shell, editor, CLI tools)?
-└─ YES → home/
-   └─ Would I want this on WSL too?
-      └─ YES → home/terminal/programs/ or home/programs/
+Creating new module option?
+└─ modules/home/programs/
 
-Is it specific to THIS machine only?
-└─ YES → host/<hostname>/nixosConfiguration.nix
-   └─ Examples: hostname, brightnessctl (laptop-only)
+User-level config (shell, editor, CLI tools)?
+└─ home/
+   ├─ Universal CLI tool? → home/terminal/programs/
+   └─ GUI/desktop app? → home/programs/
 
-Is it reusable on other NixOS machines?
-└─ YES → system/
-   └─ Hardware subsystem? → system/hardware/
-   └─ System service? → system/services/
-   └─ System program? → system/programs/
+Machine-specific (hostname, laptop-only tools)?
+└─ host/<hostname>/
+
+Reusable across NixOS machines?
+└─ system/
+   ├─ Hardware? → system/hardware/
+   ├─ Service? → system/services/
+   └─ Program? → system/programs/
+
+Custom package?
+└─ packages/ (auto-exported via easyOverlay)
 ```
+
+**Important:** Some functionality spans both system and home levels. Example:
+- `system/programs/gaming/` - System packages (heroic, gamemode, steam)
+- `home/programs/mangohud.nix` - Home-level config (user preferences)
+- Check both when verifying "is X installed?"
+
+## Critical: Git + Flakes
+
+⚠️ **Flakes only see git-tracked files**
+
+```bash
+# This WILL fail:
+touch system/hardware/new.nix
+nix build  # Error: path does not exist
+
+# MUST do this first:
+git add system/hardware/new.nix
+# OR
+git add --intent-to-add system/hardware/new.nix
+```
+
+## Important Tooling
+
+### Finding Packages by File/Binary
+
+**Use `nix-locate` (configured in this repo via nix-index-db)**:
+```bash
+nix-locate 'bin/glxinfo'              # Find package providing binary
+nix-locate --whole-name 'bin/nvtop'   # Exact match
+nix-locate 'lib/libfoo.so'            # Find library providers
+```
+
+**⚠️ DO NOT use `find /nix/store`** - millions of files, extremely slow. `nix-locate` uses a pre-built index.
+
+### Verifying What's Actually Installed
+
+**Code is truth** - Tracking docs (like `functionality-checklist.md`) can lag behind implementation.
+
+**List all installed system packages:**
+```bash
+# All packages (195 on t15g2)
+nix eval .#nixosConfigurations.t15g2.config.environment.systemPackages \
+  --apply 'pkgs: map (p: p.pname or p.name or "?") pkgs' \
+  --json | jq -r '.[]' | sort
+
+# Search for specific packages
+nix eval .#nixosConfigurations.t15g2.config.environment.systemPackages \
+  --apply 'pkgs: map (p: p.pname or p.name or "?") pkgs' \
+  --json | jq -r '.[]' | grep -i game
+# Output: gamemode, heroic, steam, steam-gamescope, steam-run
+```
+
+**Find where configuration is set** (`.definitionsWithLocations`):
+```bash
+# Trace any option to its source file
+nix eval .#nixosConfigurations.t15g2.options.programs.gamemode.enable.definitionsWithLocations
+# Output: [ { file = "/nix/store/.../system/programs/gaming"; value = true; } ]
+
+# Find which file added a package
+nix eval .#nixosConfigurations.t15g2.options.environment.systemPackages.definitionsWithLocations \
+  | grep -A2 -B2 heroic
+# Output: { file = "/nix/store/.../system/programs/gaming"; value = [ heroic ... ]; }
+```
+
+**Why this matters:**
+- Checklist said "Heroic Launcher (GOG + Epic NOT FOUND)" but it was in `system/programs/gaming/default.nix`
+- Always verify against flake eval when documentation conflicts with memory
+- Use `.definitionsWithLocations` to trace configuration to exact file
+
+### Build/Switch Commands
+
+This repo uses **nh** for better UX (shows diffs, cleaner output):
+
+```bash
+# NixOS
+nh os build -Q ~/.config/nixpkgs     # Build, no sudo
+nh os switch -Q ~/.config/nixpkgs    # Apply, needs sudo
+nh os test -Q ~/.config/nixpkgs      # Temporary test (needs sudo)
+
+# Debugging
+nix build --show-trace            # Full error trace when builds fail
+```
+
+**Initial machine setup only** (bootstrapping):
+```bash
+nix run path:${HOME}/.config/nixpkgs#install  # Custom installer for new machines
+```
+
+## Repository-Specific Notes
 
 ### Module Creation Pattern
+
+When creating new system modules:
 
 ```nix
 {pkgs, ...}: {
@@ -65,155 +171,16 @@ Is it reusable on other NixOS machines?
 2. Group related: service + tools + config in same file
 3. Comments explain context and purpose
 
-## Critical: Git + Flakes
+### Hyprland Ecosystem
 
-⚠️ **Flakes only see git-tracked files**
+All Hyprland components (hyprland, hypridle, hyprlock, hyprpaper, etc.) use `.follows` to share:
+- Same nixpkgs version
+- Same hyprutils/hyprlang libraries
 
-```bash
-# This WILL fail:
-touch system/hardware/new.nix
-nix build  # Error: path does not exist
+**Why**: Ensures ABI compatibility between compositor and all plugins/tools.
 
-# MUST do this first:
-git add system/hardware/new.nix
-# OR
-git add --intent-to-add system/hardware/new.nix
-```
+### Custom Packages
 
-## NixOS Patterns
+Defined in `packages/default.nix` via `perSystem.packages`, auto-exported as overlay via `easyOverlay` module.
 
-### Finding NixOS Options
-
-Don't guess paths. Search first:
-- https://search.nixos.org/options
-- https://mynixos.com
-
-Example: `services.bolt` (wrong) vs `services.hardware.bolt` (correct)
-
-### Package Scoping
-
-Some packages are namespaced:
-
-```nix
-# ❌ WRONG
-environment.systemPackages = with pkgs; [
-  nvtop  # Error: undefined variable
-];
-
-# ✅ CORRECT
-environment.systemPackages = with pkgs; [
-  nvtopPackages.full  # Check variants: .nvidia, .intel, .amd, .full
-];
-```
-
-Check package structure:
-```bash
-nix search nixpkgs nvtop --json | jq -r 'keys[]'
-```
-
-### Finding Packages by Binary
-
-Use `nix-locate` (configured in this repo):
-
-```bash
-nix-locate 'bin/glxinfo'        # Find package providing binary
-nix-locate --whole-name 'bin/nvtop'  # Exact match
-nix-locate --minimal 'bin/sensors'   # Just package names
-nix-locate --package mesa-demos      # All files in package
-```
-
-### List Merging
-
-NixOS **merges** lists from multiple modules:
-
-```nix
-# system/hardware/nvidia.nix
-boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
-
-# nixos-hardware module
-boot.kernelParams = ["nvidia-drm.modeset=1"];
-
-# Result: Both included, not overridden
-```
-
-Safe to split config across modules - they combine.
-
-## Workflow
-
-### Standard Development Flow
-
-1. Create/edit files
-2. **Stage new files**: `git add <file>` (required!)
-3. Build: `nh os build ~/.config/nixpkgs` (no sudo)
-4. Apply: `nh os switch ~/.config/nixpkgs` (requires sudo)
-
-**Note:** Repository uses direnv (`.envrc`) - dev environment auto-loads on `cd`
-
-### Commands
-
-| Task               | Command                                           | Sudo? |
-| ------------------ | ------------------------------------------------- | ----- |
-| Build NixOS        | `nh os build ~/.config/nixpkgs`                   | No    |
-| Switch NixOS       | `nh os switch ~/.config/nixpkgs`                  | Yes   |
-| Test NixOS (temp)  | `nh os test ~/.config/nixpkgs`                    | Yes   |
-| Home Manager       | `nix run path:${HOME}/.config/nixpkgs#install`    | No    |
-| Format             | `nix fmt`                                         | No    |
-| Update inputs      | `nix flake update`                                | No    |
-| Check eval         | `nix flake check`                                 | No    |
-
-**nh alternatives (for debugging):**
-```bash
-nix build .#nixosConfigurations.t15g2.config.system.build.toplevel  # = nh os build
-sudo nixos-rebuild switch --flake .  # = nh os switch
-nix build --show-trace  # Full error trace
-```
-
-## Troubleshooting
-
-| Error                                     | Cause                        | Fix                                       |
-| ----------------------------------------- | ---------------------------- | ----------------------------------------- |
-| `path '.../foo.nix' does not exist`       | Not git-tracked              | `git add <file>`                          |
-| `option 'services.foo' does not exist`    | Wrong path                   | Search https://search.nixos.org/options   |
-| `undefined variable 'pkg'`                | Wrong package name or scope  | `nix search nixpkgs pkg`                  |
-| Deprecated warning                        | Old syntax                   | Check warning for new option              |
-
-## Quick Reference
-
-### Package Discovery
-```bash
-nix search nixpkgs <name>                    # Search packages
-nix-locate 'bin/<binary>'                    # Find package by binary
-nix search nixpkgs <name> --json | jq       # Check variants
-```
-
-### Build Commands
-```bash
-nh os build ~/.config/nixpkgs               # Build, show diff (no sudo)
-nh os switch ~/.config/nixpkgs              # Apply (needs sudo)
-nh os test ~/.config/nixpkgs                # Temporary test (needs sudo)
-nix run path:${HOME}/.config/nixpkgs#install # Home Manager (no sudo)
-```
-
-### Git + Nix
-```bash
-git add <file>              # Stage for flake
-git add -N <file>           # Track without committing
-git ls-files                # Show tracked files
-nix flake check             # Validate flake
-nix fmt                     # Format Nix files
-```
-
-### Debugging
-```bash
-nix build --show-trace      # Full error trace
-git ls-files --error-unmatch <file>  # Check if tracked
-nix flake show              # Show flake structure
-```
-
-## Repository-Specific Notes
-
-- **nh** is used instead of raw `nixos-rebuild` (shows diffs, better UX)
-- **direnv** auto-loads dev environment from `.envrc` (`use flake`)
-- **Hardware docs** in `docs/T15G2/` (comprehensive specs)
-- **Remote deploy** via `deploy .#t15g2` (deploy-rs)
-- **Multiple hosts**: t15g2 (NixOS laptop), crc-49 (WSL)
+Discovery: `nix flake show | grep packages`

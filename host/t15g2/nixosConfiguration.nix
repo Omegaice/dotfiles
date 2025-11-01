@@ -64,11 +64,19 @@
             webcord # Discord client
             brightnessctl # Laptop screen brightness control
             #samba4Full
+            nwjs  # For NW.js-based games
+            libdecor
           ];
 
           environment.etc.hosts.mode = "0644";
 
-          programs.nix-ld.enable = true;
+          programs.nix-ld = {
+            enable = true;
+            libraries = with pkgs; [
+              glib
+              libxcursor
+            ];
+          };
         })
       ];
     });

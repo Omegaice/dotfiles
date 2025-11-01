@@ -1,10 +1,10 @@
 {pkgs, ...}: {
   programs.bitwarden-cli = {
-    enable = true;
+    enable = false;
     baseServer = "https://vault.james-sweet.com";
   };
 
   home.packages = with pkgs; [
-    bitwarden
+    bitwarden-desktop
   ];
 }
