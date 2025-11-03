@@ -130,6 +130,17 @@ nix eval .#nixosConfigurations.t15g2.options.environment.systemPackages.definiti
 - Always verify against flake eval when documentation conflicts with memory
 - Use `.definitionsWithLocations` to trace configuration to exact file
 
+### System Debugging on NixOS
+
+**Use `journalctl -k` instead of `dmesg` for kernel logs**
+
+NixOS enables `dmesg_restrict=1` by default. Use systemd's journal instead:
+```bash
+journalctl -k                          # Kernel messages (replaces dmesg)
+journalctl -k -b                       # Kernel messages since boot
+journalctl -k --since "5 minutes ago"  # Recent kernel messages
+```
+
 ### Build/Switch Commands
 
 This repo uses **nh** for better UX (shows diffs, cleaner output):
