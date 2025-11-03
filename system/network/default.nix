@@ -11,8 +11,8 @@
     enable = true;
   };
 
-  #  systemd = {
-  #    targets.network-online.wantedBy = pkgs.lib.mkForce []; # Normally ["multi-user.target"]
-  #    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce []; # Normally ["network-online.target"]
-  #  };
+  # Disable NetworkManager-wait-online to speed up boot
+  # This service blocks boot until network is fully connected, which is unnecessary
+  # unless you have network filesystems or other boot-time network dependencies
+  systemd.services.NetworkManager-wait-online.enable = false;
 }
