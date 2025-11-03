@@ -37,6 +37,7 @@
         ../../system/hardware/nvidia.nix
         ../../system/hardware/power.nix
         ../../system/hardware/thunderbolt.nix
+        ../../system/hardware/wifi/iwlwifi.nix
         ../../system/nix
         ../../system/network
         ../../system/programs
