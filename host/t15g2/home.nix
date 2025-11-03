@@ -15,8 +15,10 @@
         home.packages = with pkgs; [
           nil
           pavucontrol
+          packages.nw-generate-launcher
         ];
         services.gnome-keyring.enable = true;
+        services.hyprland-game-handler.enable = true;
       }
       ../../home
       ../../home/gtk.nix
@@ -32,6 +34,7 @@
       # GUI Applications
       ../../home/programs/anyrun.nix
       ../../home/programs/bitwarden.nix
+      ../../home/programs/dex.nix
       ../../home/programs/file-manager.nix
       ../../home/programs/firefox
       ../../home/programs/mangohud.nix

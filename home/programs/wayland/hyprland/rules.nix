@@ -16,15 +16,19 @@
       "float, class:(com.clipse)"
       "size 960 540, class:(com.clipse)"
 
-      # Gaming - Allow tearing for reduced input lag (VRR enabled in settings.nix)
-      # Steam games
-      "immediate, class:^(steam_app_).*"
+      # Gaming - NW.js games (workspace managed by hyprland-game-handler service)
+      "float, class:(nw-game)"
 
-      # Heroic Games Launcher games
+      # Gaming - Float games by default for easy repositioning
+      "float, class:^(steam_app_).*"
+      "float, class:^(heroic).*"
+      "float, class:^(wine).*"
+      "float, title:^(.*)Heroic.*$"
+
+      # Gaming - Allow tearing for reduced input lag (VRR enabled in settings.nix)
+      "immediate, class:^(steam_app_).*"
       "immediate, class:^(heroic).*"
       "immediate, title:^(.*)Heroic.*$"
-
-      # Wine/Proton games (catch-all)
       "immediate, class:^(wine).*"
     ];
   };

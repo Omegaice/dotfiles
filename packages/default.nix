@@ -11,6 +11,7 @@
     packages = let
       # Standalone tools
       allmytoes = pkgs.callPackage ./allmytoes.nix {};
+      nw-generate-launcher = pkgs.callPackage ./nw-generate-launcher.nix {};
 
       # Yazi plugin scope (for use in home-manager)
       # Not exported as a package since it's a scope, not a derivation
@@ -26,7 +27,7 @@
           '';
       });
 
-      inherit allmytoes;
+      inherit allmytoes nw-generate-launcher;
 
       # Export individual yazi plugins (nix flake show)
       yazi-allmytoes = yaziPlugins.allmytoes;

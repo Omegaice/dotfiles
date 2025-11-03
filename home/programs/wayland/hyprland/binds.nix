@@ -41,6 +41,10 @@ in {
         "$mod, P, pseudo, # dwindle"
         "$mod, J, togglesplit, # dwindle"
 
+        # Special workspace for gaming - toggle game visibility while keeping position
+        "$mod, G, togglespecialworkspace, game"
+        "$mod SHIFT, G, movetoworkspace, special:game"
+
         # Screenshots using grimblast
         ", Print, exec, grimblast --notify copy area"  # Select region → clipboard
         "SHIFT, Print, exec, grimblast --notify save area"  # Select region → file
