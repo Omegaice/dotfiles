@@ -122,6 +122,80 @@ These are close enough that you might not need scaling. But if text feels too sm
 
 **Recommendation:** Start with no scaling (1.0x both displays). If ultrawide text is too small, scale laptop to 1.25x instead of scaling ultrawide up. Reason: You have more pixels on ultrawide; use them.
 
+### GPU Rendering Architecture - Understanding Hybrid Graphics
+
+**The Physical Reality:**
+
+This T15G2 has a unique display output topology due to its physical hardware wiring:
+
+- **Internal display (eDP-1)**: Physically connected to Intel iGPU (card1)
+- **External display (DP-9 via dock)**: Physically connected to NVIDIA dGPU (card0)
+
+**The Rendering Strategy:**
+
+Despite having a powerful RTX 3080, the system is configured for **Intel-primary rendering** with NVIDIA as a display output pathway:
+
+**Intel iGPU (card1) - Primary Renderer:**
+- Handles ALL application rendering (confirmed via `glxinfo` showing Mesa Intel drivers)
+- Provides OpenGL 4.6 hardware acceleration for desktop compositing
+- Directly drives internal display (eDP-1)
+- Shares rendered frames with NVIDIA for external display output
+- Power efficient: typical workload uses integrated graphics
+
+**NVIDIA dGPU (card0) - Display Output & On-Demand:**
+- Acts as display scanout for external monitor (DP-9)
+- Idles in P5 power state (~17W, 0% utilization) when only outputting frames
+- Clocks down to 495 MHz graphics / 810 MHz memory (vs. max 2100 MHz / 6001 MHz)
+- Available for on-demand acceleration via `nvidia-offload` for specific applications
+- Used for gaming/compute when explicitly invoked
+
+**Why This Configuration:**
+
+1. **Power Efficiency**: Intel renders at much lower power draw than NVIDIA for desktop workloads
+2. **Battery Life**: Integrated graphics extends unplugged runtime significantly
+3. **Thermal Management**: Lower heat generation during normal development work
+4. **Display Compatibility**: Both GPUs active allows dual-display with different physical connections
+5. **On-Demand Performance**: NVIDIA remains available for gaming/ML via explicit invocation
+
+**Configuration Implementation:**
+
+```bash
+# Environment variable (in uwsm/env-hyprland)
+export AQ_DRM_DEVICES="/dev/dri/card1:/dev/dri/card0"
+# Intel (card1) listed first = primary renderer
+# NVIDIA (card0) listed second = available for display output
+
+# NVIDIA environment variables REMOVED for Intel-primary:
+# LIBVA_DRIVER_NAME=nvidia  # Would force all apps to NVIDIA
+# __GLX_VENDOR_LIBRARY_NAME=nvidia  # Would keep GPU always active
+```
+
+**Verification Commands:**
+
+```bash
+# Confirm application rendering uses Intel
+glxinfo -B | grep "OpenGL renderer"
+# Expected: Mesa Intel(R) UHD Graphics (TGL GT1)
+
+# Check NVIDIA is idle/low-power
+nvidia-smi
+# Expected: P5 or P8 state, <20W power draw, 0% utilization
+
+# Verify display connections
+hyprctl monitors
+# Should show eDP-1 and DP-9 both active
+```
+
+**For Gaming/GPU-Intensive Work:**
+
+Use `nvidia-offload` wrapper to explicitly run applications on NVIDIA:
+```bash
+nvidia-offload steam          # Launch Steam with NVIDIA rendering
+nvidia-offload blender        # Launch Blender with NVIDIA acceleration
+```
+
+This hybrid approach provides the best of both worlds: efficient daily use with Intel, full performance available when needed via NVIDIA.
+
 ---
 
 ## Input Devices - Philosophy: Muscle Memory and Predictability

@@ -40,7 +40,7 @@
 
 ## Graphics
 
-### Primary GPU: NVIDIA GeForce RTX 3080 Laptop
+### Discrete GPU: NVIDIA GeForce RTX 3080 Laptop
 
 | Specification          | Value                              |
 |------------------------|------------------------------------|
@@ -54,6 +54,7 @@
 | **Memory Bandwidth**   | ~448 GB/s                          |
 | **Driver Version**     | 580.95.05 (proprietary)            |
 | **PCI ID**             | `10de:249c`                        |
+| **DRM Device**         | `/dev/dri/card0` (nvidia driver)   |
 
 **GPU Features:**
 - Ray tracing (2nd gen RT cores)
@@ -72,8 +73,43 @@
 | **Base Frequency**     | 350 MHz                             |
 | **Max Frequency**      | 1.45 GHz                            |
 | **PCI ID**             | `8086:9a60`                         |
+| **DRM Device**         | `/dev/dri/card1` (i915 driver)      |
 
-**GPU Mode:** PRIME Synchronized (hybrid switching between Intel iGPU and NVIDIA dGPU)
+**GPU Architecture:** Hybrid graphics with Intel as primary renderer, NVIDIA for display output and on-demand acceleration
+
+### Display Output Topology
+
+Physical GPU-to-display connector mapping:
+
+**Intel iGPU (card1) Connectors:**
+- `card1-eDP-1`: **Connected** → Internal 15.6" display (1920x1080) - **Laptop chassis**
+- `card1-DP-1` through `card1-DP-5`: USB-C/Thunderbolt 4 ports in DisplayPort alt mode - **Laptop chassis** (2 physical USB-C ports)
+- `card1-HDMI-A-1`: Physical HDMI port - **Laptop chassis** (if equipped, varies by configuration)
+
+**NVIDIA dGPU (card0) Connectors:**
+- `card0-DP-9`: **Connected** → LG 49" UltraWide (5120x2160@72Hz) - **Via Thunderbolt dock** (DisplayPort 1.4)
+- `card0-DP-6`, `card0-DP-7`, `card0-DP-8`: Thunderbolt-tunneled DisplayPort - **Via Thunderbolt dock** (available dock ports)
+- `card0-HDMI-A-2`: Thunderbolt-tunneled HDMI - **Via Thunderbolt dock** (HDMI 2.1)
+
+**Physical Port Summary:**
+
+*Laptop Chassis:*
+- 2x USB-C/Thunderbolt 4 (support DisplayPort alt mode, 40 Gbps each) → Appear as `card1-DP-1` through `card1-DP-5`
+- 1x HDMI (configuration-dependent) → `card1-HDMI-A-1`
+- Internal eDP display → `card1-eDP-1`
+
+*Thunderbolt Dock (Lenovo 40B00300US):*
+- 2x DisplayPort 1.4 → `card0-DP-6`, `card0-DP-7`, `card0-DP-8` (available), `card0-DP-9` (in use)
+- 1x HDMI 2.1 → `card0-HDMI-A-2`
+- Connected via single Thunderbolt 4 cable to laptop
+
+**Rendering vs Display:**
+- **Primary renderer**: Intel iGPU handles all application rendering (confirmed via glxinfo)
+- **Display scanout**: NVIDIA dGPU outputs to external display (DP-9) while Intel outputs to internal (eDP-1)
+- **Power efficiency**: Intel renders frames at low power; NVIDIA idles in P5 state (~17W) when only doing display output
+- **Dock routing**: Displays connected through Thunderbolt dock appear on NVIDIA GPU (DP tunneling over Thunderbolt)
+
+This topology enables dual-display functionality while maintaining power efficiency through Intel-primary rendering. The dock's DisplayPort/HDMI outputs are tunneled over Thunderbolt and appear as NVIDIA connectors, but rendering still occurs on Intel.
 
 ---
 
