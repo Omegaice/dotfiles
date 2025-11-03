@@ -8,7 +8,16 @@
     ...
   }: {
     # Define packages first
-    packages = {
+    packages = let
+      # Standalone tools
+      allmytoes = pkgs.callPackage ./allmytoes.nix {};
+
+      # Yazi plugin scope (for use in home-manager)
+      # Not exported as a package since it's a scope, not a derivation
+      yaziPlugins = pkgs.callPackage ./yazi-plugins {
+        inherit allmytoes;
+      };
+    in {
       pdm = pkgs.pdm.overrideAttrs (prev: {
         postUnpack =
           (prev.postUnpack or "")
@@ -17,12 +26,21 @@
           '';
       });
 
-      allmytoes = pkgs.callPackage ./allmytoes.nix {};
-      yazi-allmytoes = pkgs.callPackage ./yazi-allmytoes.nix {
-        allmytoes = config.packages.allmytoes;
-      };
-      yazi-glow = pkgs.callPackage ./yazi-glow.nix {};
-      yazi-hexyl = pkgs.callPackage ./yazi-hexyl.nix {};
+      inherit allmytoes;
+
+      # Export individual yazi plugins (nix flake show)
+      yazi-allmytoes = yaziPlugins.allmytoes;
+      yazi-glow = yaziPlugins.glow;
+      yazi-hexyl = yaziPlugins.hexyl;
     };
+
+    # Export yaziPlugins scope separately for use in specialArgs
+    # This allows home-manager modules to access it
+    _module.args.yaziPlugins = let
+      allmytoes = config.packages.allmytoes;
+    in
+      pkgs.callPackage ./yazi-plugins {
+        inherit allmytoes;
+      };
   };
 }

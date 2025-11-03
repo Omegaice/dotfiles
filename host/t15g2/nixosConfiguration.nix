@@ -16,6 +16,14 @@
       specialArgs = {
         inherit inputs;
         inherit (ctx.config) packages;
+        # Pass yaziPlugins from perSystem for use in home-manager modules
+        yaziPlugins = let
+          allmytoes = ctx.config.packages.allmytoes;
+          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+        in
+          pkgs.callPackage ../../packages/yazi-plugins {
+            inherit allmytoes;
+          };
       };
       modules = [
         ./hardware-configuration.nix
