@@ -14,7 +14,7 @@
       # "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
       # "SDL_VIDEODRIVER,wayland"
       # "MOZ_ENABLE_WAYLAND,1"
-      "KWIN_DRM_USE_MODIFIERS,0"
+      # "KWIN_DRM_USE_MODIFIERS,0"
 
       # NVIDIA variables removed - use Intel iGPU by default for offload mode
       # For NVIDIA rendering, use: nvidia-offload <application>
@@ -35,7 +35,7 @@
 
     monitor = [
       "eDP-1, preferred, auto, 1" # Internal
-      "DP-9, preferred, auto-up, 1" # Work
+      "DP-9, 5120x2160@72, auto-up, 1" # Work - explicit mode to avoid "NO PREFERRED MODE" error
     ];
 
     workspace = [
@@ -149,7 +149,7 @@
       animate_mouse_windowdragging = false;
 
       # enable variable refresh rate (effective depending on hardware)
-      vrr = 1;
+      vrr = 0;
     };
 
     # touchpad gestures

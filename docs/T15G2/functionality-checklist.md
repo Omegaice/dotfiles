@@ -178,11 +178,11 @@ This checklist has been significantly expanded based on best practices analysis.
 ### Display Management
 
 #### Hotplug & Multi-Display
-- [x] Automatic display detection on dock connection (Hyprland auto-detection)
+- [x] Automatic display detection on dock connection (fixed via AQ_DRM_DEVICES + VRR disable)
 - [x] Workspace persistence across display changes (workspaces 1,3-5 on eDP-1, 2,6-10 on DP-9)
-- [x] Resolution and refresh rate auto-detection (Hyprland auto)
+- [x] Resolution and refresh rate auto-detection (explicit 5120x2160@72 for DP-9)
 - [x] Primary display switching (auto-positioning configured)
-- [ ] Hotplug notification (confirm display reconfiguration)
+- [x] Hotplug working reliably (VRR disabled to fix page flip deadlock)
 - [ ] Suspend-and-dock handling (configure displays on wake)
 - [ ] Multiple dock profiles (home, office, mobile-only)
 
@@ -193,10 +193,10 @@ This checklist has been significantly expanded based on best practices analysis.
 - [ ] Night light/blue light filter (mutually exclusive with color profiles)
 
 #### Advanced Display Features
-- [x] VRR (Variable Refresh Rate) enabled in Hyprland settings (`vrr = 1`)
+- [x] VRR (Variable Refresh Rate) **disabled** (`vrr = 0`) - causes page flip deadlock with NVIDIA + Thunderbolt dock
 - [x] Tearing allowed for games (`allow_tearing = true`)
 - [x] XWayland scaling fixed (`xwayland.force_zero_scaling = true`)
-- [ ] VRR testing and validation (gaming benefits)
+- [ ] VRR testing and validation (blocked: VRR incompatible with NVIDIA Thunderbolt hotplug)
 - [ ] HDR support (experimental, skip until mature)
 - [x] Per-display scaling configured (1.0x on both displays)
 - [ ] Fractional scaling validation (test without first)
@@ -678,7 +678,7 @@ This checklist has been significantly expanded based on best practices analysis.
 
 ### Thunderbolt
 - [x] Bolt daemon for Thunderbolt authorization (`system/hardware/thunderbolt.nix`)
-- [x] Auto-authorize known devices (your LG ultrawide dock)
+- [x] Auto-authorize known devices (Lenovo ThinkPad Thunderbolt 4 Workstation Dock - DK2131)
 - [ ] Ask for new/unknown Thunderbolt devices
 - [ ] Security: DMA attack prevention via authorization
 
@@ -877,7 +877,7 @@ This checklist has been significantly expanded based on best practices analysis.
 ### High Priority
 - [ ] Gaming stack (Steam + Proton + gamemode + MangoHud)
 - [ ] Development containers (Docker with NVIDIA runtime for ML/CUDA work)
-- [ ] Display hotplug (Thunderbolt dock with ultrawide)
+- [x] Display hotplug (Thunderbolt dock with ultrawide) - SOLVED: AQ_DRM_DEVICES + VRR disabled
 
 ### Medium Priority
 - [ ] Screen recording/sharing for development (OBS + pipewire)

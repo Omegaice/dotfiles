@@ -151,12 +151,17 @@ nvme0n1 (953.9 GB)
 | **Panel Type**              | IPS (assumed)                               |
 | **Physical Size**           | 930mm x 390mm                               |
 | **Connection**              | DisplayPort via Thunderbolt dock (DP-9)     |
-| **Variable Refresh Rate**   | Enabled (VRR/FreeSync)                      |
+| **Variable Refresh Rate**   | Hardware supports VRR/FreeSync (disabled in software due to NVIDIA + Thunderbolt hotplug conflict) |
 | **HDR**                     | Supported                                   |
 
 **Workspace Allocation:**
-- Internal (eDP-1): Hyprland workspaces 1-5
-- External (DP-9): Hyprland workspaces 6-10
+- Internal (eDP-1): Hyprland workspaces 1, 3-5
+- External (DP-9): Hyprland workspaces 2, 6-10
+
+**Hotplug Configuration:**
+- Multi-GPU via `AQ_DRM_DEVICES="/dev/dri/card1:/dev/dri/card0"` (Intel primary, NVIDIA secondary)
+- VRR disabled (`misc:vrr = 0`) to prevent page flip deadlock
+- Explicit mode `5120x2160@72` to avoid detection errors
 
 ---
 
@@ -199,6 +204,46 @@ nvme0n1 (953.9 GB)
 - High-speed storage (NVMe enclosures)
 - Docking station connectivity
 - Power delivery (charging)
+
+### Thunderbolt Dock
+
+| Specification               | Value                                           |
+|-----------------------------|-------------------------------------------------|
+| **Model**                   | Lenovo ThinkPad Thunderbolt 4 Workstation Dock  |
+| **Part Number**             | 40B00300US (DK2131)                             |
+| **Product URL**             | https://www.lenovo.com/us/en/p/accessories-and-software/docking/docking_thunderbolt-docks/40b00300us |
+| **Connection**              | Thunderbolt 4 (0.7m split cable included)       |
+| **Power Delivery**          | Up to 230W to laptop                            |
+| **Power Input**             | 20V 15A (300W adapter included)                 |
+
+**Ports:**
+- **Thunderbolt 4:** 1x downstream device port (40 Gbps)
+- **USB-A:** 4x USB 3.2 Gen 2 (10 Gbps, 1 always-on for charging)
+- **USB-C:** 1x USB 3.2 Gen 2 (10 Gbps)
+- **Video:** 1x HDMI 2.1, 2x DisplayPort 1.4
+- **Ethernet:** 1x Gigabit Ethernet (RJ45)
+- **Audio:** 1x 3.5mm combo jack (headphone/mic)
+
+**Display Support:**
+- Up to 4 external displays simultaneously
+- 1x 8K@30Hz via HDMI 2.1, or
+- 4x 4K@60Hz (via DP 1.4 + HDMI 2.1)
+
+**Physical:**
+- Dimensions: 220mm x 80mm x 30mm (L x D x H)
+- Weight: 0.45kg
+- Color: Black/Red
+- Security: NanoSaver + MicroSaver lock slots
+
+**Features:**
+- Power button for laptop power control
+- Firmware updates via Lenovo Vantage
+- 3-year warranty (CRU)
+
+**Current Configuration:**
+- LG 49" Ultrawide (5120x2160@72Hz) connected via DisplayPort → appears as DP-9 in Hyprland
+- Thunderbolt authorization: Enabled (policy: iommu)
+- Auto-authorized for seamless hotplug
 
 ### USB Ports
 

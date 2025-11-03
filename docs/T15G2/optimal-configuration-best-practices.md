@@ -19,9 +19,11 @@ Each section considers:
 
 ## Display Management - Philosophy: Seamless Adaptation
 
-### Hotplug Handling (LG Ultrawide via Thunderbolt)
+### Hotplug Handling (Thunderbolt Dock)
 
 **The Goal:** Plug in dock, displays configure automatically. Unplug, laptop display takes over. Zero manual intervention.
+
+**Hardware Context:** Lenovo ThinkPad Thunderbolt 4 Workstation Dock (DK2131) connecting LG 49" Ultrawide (5120x2160@72Hz) via DisplayPort.
 
 **Best Practice:**
 - **Workspace persistence:** When you plug in external display, workspaces 6-10 should automatically move there. When you unplug, those workspaces should migrate to the internal display (not disappear).
@@ -35,6 +37,27 @@ Each section considers:
 - Dock plugged in while system is suspended (should configure on wake)
 - Dock plugged in while system is locked (should configure but not unlock)
 - Multiple display configurations (dock at home, dock at office, just laptop)
+
+**✅ Implemented Solution (2025-11):**
+
+Multi-GPU hotplug now works reliably with the following configuration:
+
+1. **Multi-GPU Device Priority** (`~/.config/uwsm/env-hyprland`):
+   ```bash
+   export AQ_DRM_DEVICES="/dev/dri/card1:/dev/dri/card0"
+   ```
+   - Intel (card1) = primary renderer for power efficiency
+   - NVIDIA (card0) = secondary, provides external display (DP-9)
+   - Both listed so Hyprland can drive displays on either GPU
+
+2. **VRR Disabled** (`misc:vrr = 0`):
+   - **Required:** VRR causes page flip deadlock with NVIDIA + Thunderbolt
+   - Trade-off accepted: hotplug reliability > adaptive refresh
+
+3. **Explicit Mode** (`monitor = DP-9, 5120x2160@72, auto-up, 1`):
+   - Avoids "NO PREFERRED MODE" detection errors
+
+**Result:** Plug dock → DP-9 turns on automatically. Unplug → eDP-1 takes over. Zero manual intervention required.
 
 ### Color Management & ICC Profiles
 
@@ -60,10 +83,19 @@ Each section considers:
 
 **VRR Philosophy:** Eliminates tearing without the input lag of traditional VSync. Critical for gaming, nice for desktop.
 
-**Best Practice:**
-- **Always enabled on gaming display:** Your ultrawide supports VRR. Enable it system-wide, games will benefit automatically.
-- **Per-application control:** Desktop apps don't need VRR. Games do. Let Wayland/Hyprland handle this automatically.
-- **Frame rate consideration:** VRR is most noticeable when frame rates vary (40-72Hz). For steady 60fps or 72fps, benefit is minimal.
+**⚠️ Known Issue: VRR + NVIDIA + Thunderbolt Dock**
+
+VRR is **disabled** (`misc:vrr = 0`) on this system due to a page flip synchronization bug:
+- **Symptom:** External display (DP-9) stays blank after hotplug with VRR enabled
+- **Root cause:** `[AQ] drm: Cannot commit when a page-flip is awaiting` - VRR timing conflicts with NVIDIA driver on Thunderbolt displays
+- **Workaround:** Disable VRR system-wide
+- **Trade-off:** Lose adaptive refresh, but display hotplug works reliably
+- **Future:** May be resolved with future NVIDIA driver or Hyprland updates
+
+**For Your System:**
+- VRR **disabled** to enable Thunderbolt dock hotplug functionality
+- Use `allow_tearing = true` for gaming instead (immediate mode, bypasses VRR)
+- Monitor future NVIDIA driver updates (580.x series) for potential fixes
 
 **HDR Philosophy:** Better contrast and color range, but ecosystem is immature on Linux.
 
@@ -73,7 +105,7 @@ Each section considers:
 - Color management conflicts with HDR
 - Games with HDR support on Linux are rare
 
-**Recommendation:** Enable VRR (mature, works well, gaming benefit). Skip HDR (immature, marginal benefit, compatibility issues). Revisit HDR in 2026-2027.
+**Recommendation:** VRR disabled (required for hotplug). Use tearing for gaming. Skip HDR (immature, marginal benefit, compatibility issues). Revisit HDR in 2026-2027.
 
 ### Per-Display Scaling
 
@@ -1014,10 +1046,10 @@ Check xdg-desktop-portal-hyprland is installed and configured.
 - **VPN integration** - WireGuard, OpenVPN, commercial VPNs all integrate
 
 **For Your Use Case:**
-You have WiFi 6E (tri-band, 2.4/5/6 GHz), 2.5GbE Ethernet, Thunderbolt dock (likely Ethernet passthrough).
+You have WiFi 6E (tri-band, 2.4/5/6 GHz), 2.5GbE Ethernet on laptop, plus Gigabit Ethernet via Thunderbolt dock (Lenovo DK2131).
 
 **Configuration:**
-- **Prefer Ethernet when available** - Lower latency, higher bandwidth, more reliable
+- **Prefer Ethernet when available** - Lower latency, higher bandwidth, more reliable (use dock's Gigabit Ethernet when docked)
 - **WiFi as fallback** - Seamless transition when unplugging dock
 - **VPN on-demand** - For work networks, enable when needed
 
@@ -1062,7 +1094,7 @@ Bluetooth audio + video calls = codec switches to HSP (sounds bad). This is Blue
 - **Ask for new devices** (unknown USB-C devices)
 
 **For Your Use Case:**
-You have one dock (LG ultrawide + peripherals via Thunderbolt). Authorize once, then seamless.
+You have one Thunderbolt dock (Lenovo ThinkPad Thunderbolt 4 Workstation Dock - DK2131) connecting your LG 49" ultrawide display and peripherals. Authorize once, then seamless.
 
 **Recommendation:** Bolt with auto-auth for known devices. You already have this (`system/hardware/thunderbolt.nix`).
 
