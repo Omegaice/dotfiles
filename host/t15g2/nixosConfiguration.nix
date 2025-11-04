@@ -53,6 +53,7 @@
         ../../system/services/greetd.nix
         ../../system/services/gvfs.nix
         ../../system/services/logind.nix
+        ../../system/services/ollama.nix
         ../../system/services/pipewire.nix
         ../../system/services/power.nix
         ../../system/services/seahorse.nix
