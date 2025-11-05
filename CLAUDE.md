@@ -12,8 +12,10 @@ AI assistant guidance for working with this NixOS/Home Manager configuration rep
 ├── modules/           # Custom module definitions
 │   └── home/          # Custom Home Manager modules
 ├── home/              # Home Manager configurations
-│   ├── programs/      # GUI apps (per-host selection, no default.nix)
-│   └── terminal/      # CLI tools (universal, has default.nix)
+│   ├── programs/      # GUI apps (per-host explicit imports)
+│   └── terminal/      # CLI tools (per-host explicit imports)
+│       ├── programs/  # Individual tool configurations
+│       └── shell/     # Shell enhancement configurations
 ├── host/              # Machine-specific configuration
 ├── system/            # NixOS modules
 └── packages/          # Custom packages (exported via easyOverlay)
@@ -30,13 +32,31 @@ Located in `modules/home/programs/`:
 - **programs.duf** - Better df with shell integration
 - **programs.bitwarden-cli** - Bitwarden CLI configuration
 
-### Key Pattern: home/programs/ Has NO default.nix
+### Key Pattern: Explicit Imports, No Aggregators
 
-This is **intentional** for per-host selection:
-- `home/programs/` - GUI apps, explicitly imported per host (no `default.nix`)
-- `home/terminal/` - CLI tools, universal across all hosts (has `default.nix`)
+This repository **intentionally avoids `default.nix` aggregator files** in `home/`.
 
-This allows different hosts to pick different GUI applications while sharing terminal tooling.
+**Why**: Each host explicitly lists what it imports. Benefits:
+- Crystal clear what each host includes (no hidden aggregators)
+- Easy per-host customization (just omit unwanted imports)
+- Better git diffs (see exactly which hosts changed)
+- No surprise additions (new tools require explicit opt-in)
+
+**Example** - Adding a new minimal server:
+```nix
+# host/remote-server/home.nix
+imports = [
+  ../../home                              # Base HM config
+  ../../home/editor/helix
+  ../../home/terminal/programs/git.nix    # Pick only what you need
+  ../../home/terminal/programs/bat.nix
+  ../../home/terminal/programs/eza.nix
+  ../../home/terminal/shell/starship.nix
+  ../../home/terminal/shell/zsh.nix
+];
+```
+
+**Don't create** `home/terminal/default.nix` or similar aggregators - it defeats this explicitness.
 
 ### Where to Put New Configuration
 
@@ -46,8 +66,8 @@ Creating new module option?
 
 User-level config (shell, editor, CLI tools)?
 └─ home/
-   ├─ Universal CLI tool? → home/terminal/programs/
-   └─ GUI/desktop app? → home/programs/
+   ├─ CLI tool? → home/terminal/programs/foo.nix (then explicitly import per-host)
+   └─ GUI/desktop app? → home/programs/foo.nix (then explicitly import per-host)
 
 Machine-specific (hostname, laptop-only tools)?
 └─ host/<hostname>/

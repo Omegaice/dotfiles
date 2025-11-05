@@ -40,8 +40,8 @@
         ../../system/hardware/wifi/iwlwifi.nix
         ../../system/nix
         ../../system/network
-        ../../system/programs
         ../../system/programs/appimage.nix
+        ../../system/programs/dconf.nix
         ../../system/programs/fonts.nix
         ../../system/programs/home-manager.nix
         ../../system/programs/hyprland.nix
