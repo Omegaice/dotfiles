@@ -40,7 +40,7 @@
 
     workspace = [
       "1, monitor:eDP-1, default:true"
-      "2, monitor:DP-9, default:true"
+      "2, monitor:eDP-1"
       "3, monitor:eDP-1"
       "4, monitor:eDP-1"
       "5, monitor:eDP-1"
