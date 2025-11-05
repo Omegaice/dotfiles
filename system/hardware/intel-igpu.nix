@@ -1,5 +1,5 @@
-# Intel Tiger Lake (11th Gen) Hardware Configuration
-# Covers both CPU and integrated GPU (UHD Graphics GT1)
+# Intel Integrated Graphics (iGPU) Configuration
+# Generic configuration for Intel integrated GPUs
 
 { config, lib, pkgs, ... }: {
   # === CPU Configuration ===
@@ -7,7 +7,7 @@
   # Enable Intel microcode updates
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # === Intel UHD Graphics (iGPU) Configuration ===
+  # === Intel iGPU Configuration ===
 
   # Load Intel GPU module in initrd for early KMS
   boot.initrd.kernelModules = [ "i915" ];
@@ -18,9 +18,9 @@
 
   # Hardware video acceleration packages
   hardware.graphics.extraPackages = with pkgs; [
-    intel-media-driver     # VAAPI driver for video decode/encode (Tiger Lake)
+    intel-media-driver     # VAAPI driver for video decode/encode (Gen 8+)
     intel-compute-runtime  # OpenCL support
-    vpl-gpu-rt            # Intel VPL (Video Processing Library)
+    vpl-gpu-rt             # Intel VPL (Video Processing Library)
   ];
 
   # 32-bit support for Steam/Wine

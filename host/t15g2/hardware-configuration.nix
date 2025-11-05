@@ -64,4 +64,10 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  # NVIDIA PRIME PCI bus IDs (from: lspci | grep VGA)
+  hardware.nvidia.prime = {
+    intelBusId = "PCI:0:2:0";    # Intel UHD Graphics
+    nvidiaBusId = "PCI:1:0:0";   # NVIDIA RTX 3080 Mobile
+  };
 }

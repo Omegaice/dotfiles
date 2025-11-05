@@ -13,12 +13,6 @@
     };
 
     prime = {
-      # PCI bus IDs from: lspci | grep VGA
-      # 00:02.0 = Intel UHD Graphics
-      # 01:00.0 = NVIDIA RTX 3080 Mobile
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-
       offload = {
         enable = true;
         enableOffloadCmd = true; # Provides nvidia-offload wrapper command
@@ -38,6 +32,6 @@
 
   environment.systemPackages = with pkgs; [
     mesa-demos # glxinfo/glxgears for testing
-    #nvtopPackages.full # GPU monitoring (NVIDIA + Intel)
+    nvtopPackages.full # GPU monitoring (NVIDIA + Intel)
   ];
 }

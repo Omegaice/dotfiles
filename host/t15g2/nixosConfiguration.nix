@@ -32,7 +32,7 @@
         ../../system/hardware/backlight.nix
         ../../system/hardware/bluetooth.nix
         ../../system/hardware/fwupd.nix
-        ../../system/hardware/intel-tigerlake.nix
+        ../../system/hardware/intel-igpu.nix
         ../../system/hardware/monitoring.nix
         ../../system/hardware/nvidia.nix
         ../../system/hardware/power.nix
