@@ -58,7 +58,6 @@
 
       # Services
       ../../home/services/bluetooth.nix
-      ../../home/services/ghostty.nix
     ];
   };
 }
