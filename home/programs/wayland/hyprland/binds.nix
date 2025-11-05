@@ -50,6 +50,11 @@ in {
         "SHIFT, Print, exec, grimblast --notify save area"  # Select region → file
         "ALT, Print, exec, grimblast --notify --cursor save active"  # Active window → file (with cursor)
         "CTRL, Print, exec, grimblast --notify --cursor save screen"  # Full screen → file (with cursor)
+
+        # Audio control tools
+        "$mod, A, exec, pwvucontrol"                    # PipeWire volume control (most common)
+        "$mod SHIFT, A, exec, qpwgraph"                 # Audio routing graph (advanced)
+        "$mod CTRL, A, exec, easyeffects"               # Audio effects and EQ (occasional)
       ]
       ++ workspaces;
 

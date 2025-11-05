@@ -10,6 +10,7 @@
     ./git.nix       # Version control
     ./jq.nix        # JSON processor
     ./nix.nix       # Nix configuration
+    ./pulsemixer.nix # TUI audio mixer
     ./rg.nix        # Better grep
     ./xdg.nix       # XDG base directories
     ./zellij.nix    # Terminal multiplexer

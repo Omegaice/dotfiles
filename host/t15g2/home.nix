@@ -14,7 +14,7 @@
         home.username = "omegaice";
         home.packages = with pkgs; [
           nil
-          pavucontrol
+          playerctl  # Media player control via MPRIS
           packages.nw-generate-launcher
         ];
         services.gnome-keyring.enable = true;
@@ -33,6 +33,7 @@
 
       # GUI Applications
       ../../home/programs/anyrun.nix
+      ../../home/programs/audio.nix
       ../../home/programs/bitwarden.nix
       ../../home/programs/dex.nix
       ../../home/programs/file-manager.nix
