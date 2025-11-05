@@ -9,6 +9,10 @@
       # Only absolute paths (~/...) - no project-relative patterns
       # Project-specific patterns (.env, secrets/) go in .claude/settings.local.json
       permissions = {
+        allow = [
+          "mcp__context7__resolve-library-id"
+          "mcp__context7__get-library-docs"
+        ];
         deny = [
           # SSH and GPG keys
           "Read(~/.ssh/**)"
@@ -81,6 +85,44 @@
       sandbox = {
         enabled = true;
         autoAllowBashIfSandboxed = true;
+        allowUnsandboxedCommands = true;
+        enableWeakerNestedSandbox = false;
+        excludedCommands = ["zpool:*" "zfs:*"];
+        network = {
+          allowUnixSockets = [];
+          allowLocalBinding = true;
+          httpProxyPort = 8080;
+          socksProxyPort = 8081;
+        };
+      };
+
+      # Keep at least 1 years worth of transcripts etc
+      cleanupPeriodDays = 365;
+
+      # Tell claude-code not to include "Co-Authored-By" trailers in commit messages
+      includeCoAuthoredBy = false;
+
+      # Setup useful statusline
+      statusLine = {
+        type = "command";
+        command = "${pkgs.bun}/bin/bun x ccusage statusline";
+        padding = 0;
+      };
+
+      enableAllProjectMcpServers = true;
+
+      # Environment variables
+      env = {
+        # Maintain project working directory after each bash command
+        CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR = "1";
+
+        # Show differentiation for sandboxed commands (SandboxedBash vs Bash)
+        CLAUDE_CODE_BASH_SANDBOX_SHOW_INDICATOR = "1";
+
+        # Privacy: disable telemetry and error reporting
+        DISABLE_TELEMETRY = "1";
+        DISABLE_ERROR_REPORTING = "1";
+        DISABLE_BUG_COMMAND = "1";
       };
     };
   };

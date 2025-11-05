@@ -31,6 +31,7 @@
       # Terminal programs (core CLI tools)
       ../../home/terminal/programs/bat.nix
       ../../home/terminal/programs/btop.nix
+      ../../home/terminal/programs/bun.nix
       ../../home/terminal/programs/claude-code.nix
       ../../home/terminal/programs/duf.nix
       ../../home/terminal/programs/eza.nix
