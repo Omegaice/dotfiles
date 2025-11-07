@@ -1,4 +1,5 @@
-{pkgs}: {
+{ pkgs }:
+{
   environment.systemPackages = with pkgs; [
     virt-manager
   ];
@@ -11,7 +12,7 @@
         package = pkgs.qemu_kvm;
         ovmf = {
           enable = true;
-          packages = [pkgs.OVMFFull.fd];
+          packages = [ pkgs.OVMFFull.fd ];
         };
         swtpm.enable = true;
       };

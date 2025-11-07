@@ -2,7 +2,8 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   imports = [
     ../modules/home
     ./programs/steam.nix
@@ -12,7 +13,10 @@
     username = lib.mkDefault "jsweet";
     homeDirectory = "/home/${config.home.username}";
     stateVersion = "25.05";
-    extraOutputsToInstall = ["doc" "devdoc"];
+    extraOutputsToInstall = [
+      "doc"
+      "devdoc"
+    ];
 
     enableNixpkgsReleaseCheck = false;
   };

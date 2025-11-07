@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Thunderbolt device management
   # Bolt is a userspace daemon for Thunderbolt 3/4 security and device authorization
   # Works with any desktop environment (not just GNOME)

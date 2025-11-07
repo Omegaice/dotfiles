@@ -2,7 +2,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -19,8 +20,8 @@
       "bluetooth.conf" = {
         "monitor.bluez.properties" = {
           # Enable high-quality codecs for Bluetooth audio
-          "bluez5.enable-sbc-xq" = true;  # SBC XQ (high quality SBC)
-          "bluez5.enable-msbc" = true;    # mSBC (for headset calls)
+          "bluez5.enable-sbc-xq" = true; # SBC XQ (high quality SBC)
+          "bluez5.enable-msbc" = true; # mSBC (for headset calls)
           "bluez5.enable-hw-volume" = true; # Hardware volume control
 
           # Codec priorities (higher = preferred)
@@ -31,13 +32,13 @@
           # AAC: Apple's codec (good quality)
           # SBC XQ: Enhanced SBC (better than standard SBC)
           "bluez5.codecs" = [
-            "opus_05"  # Best quality (PipeWire-to-PipeWire only, not for commercial headphones)
-            "ldac"     # Best quality for real hardware (Sony)
-            "aptx_hd"  # High quality, low latency (Qualcomm)
-            "aptx"     # Good quality (Qualcomm)
-            "aac"      # Apple devices
-            "sbc_xq"   # Enhanced SBC fallback
-            "sbc"      # Universal fallback
+            "opus_05" # Best quality (PipeWire-to-PipeWire only, not for commercial headphones)
+            "ldac" # Best quality for real hardware (Sony)
+            "aptx_hd" # High quality, low latency (Qualcomm)
+            "aptx" # Good quality (Qualcomm)
+            "aac" # Apple devices
+            "sbc_xq" # Enhanced SBC fallback
+            "sbc" # Universal fallback
           ];
 
           # LDAC encoding quality: auto, hq, sq, mq
@@ -54,6 +55,6 @@
   # Ensure Bluetooth audio codecs are available
   environment.systemPackages = with pkgs; [
     # These provide additional codec support
-    ldacbt  # LDAC Bluetooth codec library
+    ldacbt # LDAC Bluetooth codec library
   ];
 }

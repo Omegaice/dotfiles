@@ -3,13 +3,14 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.deploy;
 
   generic-settings.options = {
     sshOpts = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
       description = ''This is an optional list of arguments that will be passed to SSH. '';
     };
 
@@ -120,69 +121,65 @@ with lib; let
     };
   };
 
-  profile.options =
-    generic-settings.options
-    // {
-      path = mkOption {
-        default = {};
-        description = ''
-          A derivation containing your required software, and a script to activate it in `''${path}/deploy-rs-activate`
-          For ease of use, `deploy-rs` provides a function to easily add the required activation script to any derivation
-          Both the working directory and `$PROFILE` will point to `profilePath`
-        '';
-      };
-
-      profilePath = mkOption {
-        type = types.nullOr types.path;
-        default = null;
-        description = ''
-          An optional path to where your profile should be installed to, this is useful if you want to use a common profile name across multiple users, but would have conflicts in your node's profile list.
-          This will default to `"/nix/var/nix/profiles/system` if `user` is `root` and profile name is `system`,
-          `/nix/var/nix/profiles/per-user/root/$PROFILE_NAME` if profile name is different.
-          For non-root profiles will default to /nix/var/nix/profiles/per-user/$USER/$PROFILE_NAME if `/nix/var/nix/profiles/per-user/$USER` already exists,
-          and `''${XDG_STATE_HOME:-$HOME/.local/state}/nix/profiles/$PROFILE_NAME` otherwise.
-        '';
-      };
+  profile.options = generic-settings.options // {
+    path = mkOption {
+      default = { };
+      description = ''
+        A derivation containing your required software, and a script to activate it in `''${path}/deploy-rs-activate`
+        For ease of use, `deploy-rs` provides a function to easily add the required activation script to any derivation
+        Both the working directory and `$PROFILE` will point to `profilePath`
+      '';
     };
 
-  nodes.options =
-    generic-settings.options
-    // {
-      hostname = mkOption {
-        type = types.str;
-        description = "The hostname of your server. Can be overridden at invocation time with a flag.";
-      };
-
-      profileOrder = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = ''
-          An optional list containing the order you want profiles to be deployed.
-          This will take effect whenever you run `deploy` without specifying a profile, causing it to deploy every profile automatically.
-          Any profiles not in this list will still be deployed (in an arbitrary order) after those which are listed
-        '';
-      };
-
-      profiles = mkOption {
-        type = types.attrsOf (types.submodule profile);
-        default = {};
-        description = ''
-          allows for lesser-privileged deployments,
-          and the ability to update different things independently of each other.
-          You can deploy any type of profile to any user, not just a NixOS profile to root.
-        '';
-      };
+    profilePath = mkOption {
+      type = types.nullOr types.path;
+      default = null;
+      description = ''
+        An optional path to where your profile should be installed to, this is useful if you want to use a common profile name across multiple users, but would have conflicts in your node's profile list.
+        This will default to `"/nix/var/nix/profiles/system` if `user` is `root` and profile name is `system`,
+        `/nix/var/nix/profiles/per-user/root/$PROFILE_NAME` if profile name is different.
+        For non-root profiles will default to /nix/var/nix/profiles/per-user/$USER/$PROFILE_NAME if `/nix/var/nix/profiles/per-user/$USER` already exists,
+        and `''${XDG_STATE_HOME:-$HOME/.local/state}/nix/profiles/$PROFILE_NAME` otherwise.
+      '';
     };
-in {
+  };
+
+  nodes.options = generic-settings.options // {
+    hostname = mkOption {
+      type = types.str;
+      description = "The hostname of your server. Can be overridden at invocation time with a flag.";
+    };
+
+    profileOrder = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        An optional list containing the order you want profiles to be deployed.
+        This will take effect whenever you run `deploy` without specifying a profile, causing it to deploy every profile automatically.
+        Any profiles not in this list will still be deployed (in an arbitrary order) after those which are listed
+      '';
+    };
+
+    profiles = mkOption {
+      type = types.attrsOf (types.submodule profile);
+      default = { };
+      description = ''
+        allows for lesser-privileged deployments,
+        and the ability to update different things independently of each other.
+        You can deploy any type of profile to any user, not just a NixOS profile to root.
+      '';
+    };
+  };
+in
+{
   options = {
-    deploy =
-      {
-        nodes = mkOption {
-          type = types.attrsOf (types.submodule nodes);
-          default = {};
-        };
-      }
-      // generic-settings.options;
+    deploy = {
+      nodes = mkOption {
+        type = types.attrsOf (types.submodule nodes);
+        default = { };
+      };
+    }
+    // generic-settings.options;
   };
 
   config = {

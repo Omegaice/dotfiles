@@ -1,4 +1,5 @@
-{lib, ...}: {
+{ lib, ... }:
+{
   # Should not be changed
   system.stateVersion = lib.mkDefault "25.04";
 

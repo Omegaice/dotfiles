@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   programs = {
     dconf.enable = true;
   };

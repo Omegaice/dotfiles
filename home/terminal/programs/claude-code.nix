@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.claude-code = {
     enable = true;
     package = pkgs.claude-code;
@@ -94,9 +95,12 @@
         autoAllowBashIfSandboxed = true;
         allowUnsandboxedCommands = true;
         enableWeakerNestedSandbox = false;
-        excludedCommands = ["zpool:*" "zfs:*"];
+        excludedCommands = [
+          "zpool:*"
+          "zfs:*"
+        ];
         network = {
-          allowUnixSockets = [];
+          allowUnixSockets = [ ];
           allowLocalBinding = true;
           httpProxyPort = 8080;
           socksProxyPort = 8081;

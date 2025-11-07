@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.services.hyprland-game-handler;
-in {
+in
+{
   options.services.hyprland-game-handler = {
     enable = mkEnableOption "Hyprland game window handler";
   };
@@ -16,8 +18,8 @@ in {
       Unit = {
         Description = "Hyprland game window management handler";
         Documentation = "https://wiki.hypr.land/Configuring/Window-Rules/#dynamic-rules";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session.target"];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
         ConditionEnvironment = "HYPRLAND_INSTANCE_SIGNATURE";
       };
 
@@ -63,7 +65,7 @@ in {
       };
 
       Install = {
-        WantedBy = ["graphical-session.target"];
+        WantedBy = [ "graphical-session.target" ];
       };
     };
   };

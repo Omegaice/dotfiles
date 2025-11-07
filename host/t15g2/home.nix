@@ -3,7 +3,8 @@
   pkgs,
   packages,
   ...
-}: {
+}:
+{
   home-manager = {
     extraSpecialArgs = {
       inherit inputs packages;
@@ -14,7 +15,7 @@
         home.username = "omegaice";
         home.packages = with pkgs; [
           nil
-          playerctl  # Media player control via MPRIS
+          playerctl # Media player control via MPRIS
           packages.nw-generate-launcher
         ];
         services.gnome-keyring.enable = true;

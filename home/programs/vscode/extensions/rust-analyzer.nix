@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.vscode = {
     userSettings = {
       "rust-analyzer.testExplorer" = true;

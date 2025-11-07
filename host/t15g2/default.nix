@@ -3,9 +3,11 @@
   self,
   withSystem,
   ...
-}: let
+}:
+let
   inherit (flake-parts-lib) importApply;
-in {
+in
+{
   imports = [
     ./deploy.nix
     ./nixosConfiguration.nix
@@ -19,4 +21,3 @@ in {
 # nixpkgs = import inputs.nixpkgs {
 #       config.cudaSupport = true;
 #     };
-

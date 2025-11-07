@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   imports = [
     ./extensions
   ];
@@ -29,7 +30,10 @@
       "editor.linkedEditing" = true;
       "files.trimFinalNewlines" = true;
       "files.trimTrailingWhitespace" = true;
-      "editor.rulers" = [80 120];
+      "editor.rulers" = [
+        80
+        120
+      ];
       "editor.wordWrapColumn" = 120;
       "terminal.integrated.enablePersistentSessions" = false;
       "terminal.integrated.fontFamily" = "JetBrainsMono NFM";

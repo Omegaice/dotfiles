@@ -2,18 +2,20 @@
   withSystem,
   inputs,
   ...
-}: {
+}:
+{
   flake = {
-    homeConfigurations."jsweet" = withSystem "x86_64-linux" (ctx @ {
-      pkgs,
-      inputs',
-      final,
-      ...
-    }:
+    homeConfigurations."jsweet" = withSystem "x86_64-linux" (
+      ctx@{
+        pkgs,
+        inputs',
+        final,
+        ...
+      }:
       inputs.home-manager.lib.homeManagerConfiguration {
         inherit (ctx) pkgs;
 
-        extraSpecialArgs = {inherit inputs;};
+        extraSpecialArgs = { inherit inputs; };
 
         modules = [
           ./package-diff
@@ -34,7 +36,8 @@
           ../home/terminal/shell/zoxide.nix
           ../home/terminal/shell/zsh.nix
           (
-            {pkgs, ...}: {
+            { pkgs, ... }:
+            {
               targets.genericLinux.enable = true;
 
               # Packages that should be installed to the user profile.
@@ -90,6 +93,7 @@
             }
           )
         ];
-      });
+      }
+    );
   };
 }

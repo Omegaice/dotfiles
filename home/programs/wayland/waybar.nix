@@ -11,8 +11,11 @@
         layer = "top";
         position = "top";
         height = 30;
-        modules-left = ["hyprland/workspaces" "hyprland/submap"];
-        modules-center = ["hyprland/window"];
+        modules-left = [
+          "hyprland/workspaces"
+          "hyprland/submap"
+        ];
+        modules-center = [ "hyprland/window" ];
         modules-right = [
           "network"
           "backlight"
@@ -49,7 +52,13 @@
             warning = 30;
             critical = 20;
           };
-          format-icons = [" " " " " " " " " "];
+          format-icons = [
+            " "
+            " "
+            " "
+            " "
+            " "
+          ];
           format = "<span color='#8ec07c' > {icon}</span>{capacity}%";
           format-critical = "<span color='#cc241d' > {icon}</span>{capacity}%";
           format-warning = "<span color='#d8a657' > {icon}</span>{capacity}%";
@@ -74,10 +83,13 @@
             phone-muted = "";
             portable = "";
             car = "";
-            default = ["" ""];
+            default = [
+              ""
+              ""
+            ];
           };
           scroll-step = 1;
-          on-click = "pwvucontrol";  # Modern PipeWire volume control
+          on-click = "pwvucontrol"; # Modern PipeWire volume control
         };
       };
     };

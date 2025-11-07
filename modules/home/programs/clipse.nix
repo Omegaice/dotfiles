@@ -4,14 +4,16 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.programs.clipse;
-  jsonFormat = pkgs.formats.json {};
-in {
+  jsonFormat = pkgs.formats.json { };
+in
+{
   options.programs.clipse = {
     enable = mkEnableOption "clipse, a configurable TUI clipboard manager for Unix";
 
-    package = mkPackageOption pkgs "clipse" {};
+    package = mkPackageOption pkgs "clipse" { };
 
     maxHistory = mkOption {
       type = types.int;
@@ -27,7 +29,7 @@ in {
 
     settings = mkOption {
       type = jsonFormat.type;
-      default = {};
+      default = { };
       example = literalExpression ''
         {
           imageDisplay = {
@@ -47,17 +49,19 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [cfg.package];
+    home.packages = [ cfg.package ];
 
     # Generate config.json if any settings are specified
-    xdg.configFile."clipse/config.json" = mkIf (cfg.settings != {} || cfg.maxHistory != 100 || !cfg.allowDuplicates) {
-      source = jsonFormat.generate "clipse-config" (
+    xdg.configFile."clipse/config.json" =
+      mkIf (cfg.settings != { } || cfg.maxHistory != 100 || !cfg.allowDuplicates)
         {
-          maxHistory = cfg.maxHistory;
-          allowDuplicates = cfg.allowDuplicates;
-        }
-        // cfg.settings
-      );
-    };
+          source = jsonFormat.generate "clipse-config" (
+            {
+              maxHistory = cfg.maxHistory;
+              allowDuplicates = cfg.allowDuplicates;
+            }
+            // cfg.settings
+          );
+        };
   };
 }

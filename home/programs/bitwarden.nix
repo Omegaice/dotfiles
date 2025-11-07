@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.bitwarden-cli = {
     enable = false;
     baseServer = "https://vault.james-sweet.com";

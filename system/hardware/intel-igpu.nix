@@ -1,7 +1,13 @@
 # Intel Integrated Graphics (iGPU) Configuration
 # Generic configuration for Intel integrated GPUs
 
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   # === CPU Configuration ===
 
   # Enable Intel microcode updates
@@ -18,9 +24,9 @@
 
   # Hardware video acceleration packages
   hardware.graphics.extraPackages = with pkgs; [
-    intel-media-driver     # VAAPI driver for video decode/encode (Gen 8+)
-    intel-compute-runtime  # OpenCL support
-    vpl-gpu-rt             # Intel VPL (Video Processing Library)
+    intel-media-driver # VAAPI driver for video decode/encode (Gen 8+)
+    intel-compute-runtime # OpenCL support
+    vpl-gpu-rt # Intel VPL (Video Processing Library)
   ];
 
   # 32-bit support for Steam/Wine

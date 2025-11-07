@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.steam = {
     enable = true;
     gamescopeSession.enable = true;
@@ -8,8 +9,8 @@
     localNetworkGameTransfers.openFirewall = true;
 
     package = pkgs.steam.override {
-      extraPkgs = pkgs:
-        with pkgs; [
+      extraPkgs =
+        pkgs: with pkgs; [
           gamemode
           mangohud # Performance overlay (FPS, temps, GPU/CPU usage)
         ];

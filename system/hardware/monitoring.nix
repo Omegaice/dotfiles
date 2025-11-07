@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Hardware monitoring and diagnostic tools
   # These tools help monitor hardware health and performance
   environment.systemPackages = with pkgs; [

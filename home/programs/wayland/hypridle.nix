@@ -2,7 +2,8 @@
   inputs,
   pkgs,
   ...
-}: let
+}:
+let
   # Power state checks
   onBattery = ''[ "$(cat /sys/class/power_supply/AC*/online)" = "0" ]'';
   onAC = ''[ "$(cat /sys/class/power_supply/AC*/online)" = "1" ]'';
@@ -14,7 +15,8 @@
   screenOn = "hyprctl dispatch dpms on";
   lockSession = "loginctl lock-session";
   suspend = "systemctl suspend";
-in {
+in
+{
   services.hypridle = {
     enable = true;
     package = inputs.hypridle.packages.${pkgs.system}.default;

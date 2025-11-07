@@ -7,7 +7,7 @@
 # Use makeScope for extensibility
 lib.makeScope pkgs.newScope (self: {
   # Builder
-  buildYaziPlugin = callPackage ./build-yazi-plugin.nix {};
+  buildYaziPlugin = callPackage ./build-yazi-plugin.nix { };
 
   # Plugins
   allmytoes = self.buildYaziPlugin {
@@ -21,7 +21,7 @@ lib.makeScope pkgs.newScope (self: {
       hash = "sha256-FD2kzmavY+xSQEnuNnDmGwI92mA1K6LMX/LXFRdewI0=";
     };
 
-    runtimeInputs = [allmytoes];
+    runtimeInputs = [ allmytoes ];
 
     # Note: previewers/preloaders should be configured per-user based on
     # programs.allmytoes.thumbnailer.mimeTypes (which includes custom providers)
@@ -55,7 +55,7 @@ lib.makeScope pkgs.newScope (self: {
       hash = "sha256-fKJ5ld5xc6HsM/h5j73GABB5i3nmcwWCs+QSdDPA9cU=";
     };
 
-    runtimeInputs = [pkgs.glow];
+    runtimeInputs = [ pkgs.glow ];
 
     meta = {
       description = "Glow markdown preview plugin for yazi";
@@ -75,7 +75,7 @@ lib.makeScope pkgs.newScope (self: {
       hash = "sha256-9rPJcgMYtSY5lYnFQp3bAhaOBdNUkBaN1uMrjen6Z8g=";
     };
 
-    runtimeInputs = [pkgs.hexyl];
+    runtimeInputs = [ pkgs.hexyl ];
 
     meta = {
       description = "Hexyl hex viewer plugin for yazi";

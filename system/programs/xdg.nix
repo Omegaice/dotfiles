@@ -2,7 +2,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;

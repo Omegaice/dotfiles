@@ -2,10 +2,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   worktree-clone = pkgs.writeShellApplication {
     name = "worktree-clone";
-    runtimeInputs = [pkgs.git];
+    runtimeInputs = [ pkgs.git ];
     text = ''
       url=$1
       basename=''${url##*/}
@@ -31,7 +32,8 @@
       fi
     '';
   };
-in {
+in
+{
   programs = {
     git = {
       enable = true;
@@ -90,7 +92,10 @@ in {
 
     gh = {
       enable = true;
-      extensions = with pkgs; [gh-actions-cache gh-dash];
+      extensions = with pkgs; [
+        gh-actions-cache
+        gh-dash
+      ];
     };
 
     git-cliff = {

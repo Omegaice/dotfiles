@@ -2,7 +2,8 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   programs.uwsm = {
     enable = true;
     waylandCompositors = {

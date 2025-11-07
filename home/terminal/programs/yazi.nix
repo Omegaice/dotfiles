@@ -5,7 +5,8 @@
   packages,
   yaziPlugins,
   ...
-}: {
+}:
+{
   # General file info tools
   home.packages = [
     pkgs.exiftool
@@ -39,14 +40,18 @@
 
         # Configure allmytoes to handle all image formats
         # Includes built-in support + custom providers (e.g., Sony ARW from file-manager.nix)
-        previewers = ["image/*"];
-        preloaders = ["image/*"];
+        previewers = [ "image/*" ];
+        preloaders = [ "image/*" ];
       }
     ];
 
     settings = {
       manager = {
-        ratio = [1 2 5];
+        ratio = [
+          1
+          2
+          5
+        ];
         sort_by = "natural";
         linemod = "size_and_mtime";
       };

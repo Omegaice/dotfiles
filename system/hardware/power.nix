@@ -34,13 +34,13 @@
       CPU_MAX_PERF_ON_BAT = 80;
 
       # Turbo Boost control
-      CPU_BOOST_ON_AC = 1;  # Enabled on AC (free performance)
+      CPU_BOOST_ON_AC = 1; # Enabled on AC (free performance)
       CPU_BOOST_ON_BAT = 0; # Disabled on battery (huge power draw)
 
       # Battery charge thresholds (preserve battery longevity)
       # Charging to 100% accelerates degradation
       START_CHARGE_THRESH_BAT0 = 75; # Start charging at 75%
-      STOP_CHARGE_THRESH_BAT0 = 90;  # Stop charging at 90%
+      STOP_CHARGE_THRESH_BAT0 = 90; # Stop charging at 90%
 
       # Platform profile (ACPI firmware hints)
       PLATFORM_PROFILE_ON_AC = "performance";
@@ -55,7 +55,7 @@
       INTEL_GPU_BOOST_FREQ_ON_BAT = 1450;
 
       # Runtime power management
-      RUNTIME_PM_ON_AC = "on";   # Keep devices active on AC
+      RUNTIME_PM_ON_AC = "on"; # Keep devices active on AC
       RUNTIME_PM_ON_BAT = "auto"; # Aggressive power saving on battery
 
       # PCIe Active State Power Management
@@ -71,7 +71,7 @@
       USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN = 1;
 
       # Audio codec power saving
-      SOUND_POWER_SAVE_ON_AC = 0;  # No timeout on AC (avoid pops/clicks)
+      SOUND_POWER_SAVE_ON_AC = 0; # No timeout on AC (avoid pops/clicks)
       SOUND_POWER_SAVE_ON_BAT = 1; # 1 second timeout on battery
 
       # Disk/NVMe power management

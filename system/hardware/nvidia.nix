@@ -1,5 +1,6 @@
-{pkgs, ...}: {
-  services.xserver.videoDrivers = ["nvidia"];
+{ pkgs, ... }:
+{
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     # Proprietary driver has better performance/stability than open

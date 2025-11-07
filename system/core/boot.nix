@@ -12,6 +12,6 @@
     ];
 
     # ThinkPad-specific kernel modules
-    kernelModules = ["thinkpad_acpi"]; # Enables battery thresholds, LEDs, fan control
+    kernelModules = [ "thinkpad_acpi" ]; # Enables battery thresholds, LEDs, fan control
   };
 }

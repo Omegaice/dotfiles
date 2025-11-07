@@ -154,7 +154,7 @@
 
     # touchpad gestures
     gesture = [
-      "3, horizontal, workspace"  # 3-finger horizontal swipe to switch workspaces
+      "3, horizontal, workspace" # 3-finger horizontal swipe to switch workspaces
     ];
 
     xwayland.force_zero_scaling = true;

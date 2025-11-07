@@ -2,7 +2,8 @@
   inputs,
   pkgs,
   ...
-}: {
+}:
+{
   # enable hyprland and required options
   programs.hyprland = {
     enable = true;
@@ -14,7 +15,7 @@
     xwayland.enable = true;
   };
 
-  security.pam.services.hyprlock = {};
+  security.pam.services.hyprlock = { };
 
   environment.systemPackages = [
     inputs.hyprpolkitagent.packages.${pkgs.system}.hyprpolkitagent

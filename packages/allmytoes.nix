@@ -40,7 +40,7 @@ rustPlatform.buildRustPackage rec {
     description = "Provides thumbnails according to the freedesktop.org specification";
     homepage = "https://gitlab.com/allmytoes/allmytoes";
     license = lib.licenses.gpl3Plus;
-    maintainers = with lib.maintainers; [];
+    maintainers = with lib.maintainers; [ ];
     mainProgram = "allmytoes";
     platforms = lib.platforms.linux;
   };

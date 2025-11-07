@@ -6,18 +6,25 @@
   lib,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   boot = {
     initrd = {
-      availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usbhid" "rtsx_pci_sdmmc"];
-      kernelModules = [];
+      availableKernelModules = [
+        "xhci_pci"
+        "thunderbolt"
+        "nvme"
+        "usbhid"
+        "rtsx_pci_sdmmc"
+      ];
+      kernelModules = [ ];
     };
-    kernelModules = ["kvm-intel"];
-    extraModulePackages = [];
+    kernelModules = [ "kvm-intel" ];
+    extraModulePackages = [ ];
     zfs.devNodes = "/dev/disk/by-id";
   };
 
@@ -25,31 +32,34 @@
     "/" = {
       device = "zpool/root";
       fsType = "zfs";
-      options = ["zfsutil"];
+      options = [ "zfsutil" ];
     };
 
     "/nix" = {
       device = "zpool/nix";
       fsType = "zfs";
-      options = ["zfsutil"];
+      options = [ "zfsutil" ];
     };
 
     "/var" = {
       device = "zpool/var";
       fsType = "zfs";
-      options = ["zfsutil"];
+      options = [ "zfsutil" ];
     };
 
     "/home" = {
       device = "zpool/home";
       fsType = "zfs";
-      options = ["zfsutil"];
+      options = [ "zfsutil" ];
     };
 
     "/boot" = {
       device = "/dev/disk/by-uuid/64A5-5CFB";
       fsType = "vfat";
-      options = ["fmask=0022" "dmask=0022"];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
   };
 
@@ -67,7 +77,7 @@
 
   # NVIDIA PRIME PCI bus IDs (from: lspci | grep VGA)
   hardware.nvidia.prime = {
-    intelBusId = "PCI:0:2:0";    # Intel UHD Graphics
-    nvidiaBusId = "PCI:1:0:0";   # NVIDIA RTX 3080 Mobile
+    intelBusId = "PCI:0:2:0"; # Intel UHD Graphics
+    nvidiaBusId = "PCI:1:0:0"; # NVIDIA RTX 3080 Mobile
   };
 }

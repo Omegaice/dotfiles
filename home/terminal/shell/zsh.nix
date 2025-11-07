@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -16,12 +17,13 @@
 
       zstyle :completion-sync:path enabled true
     '';
-    shellAliases =
-      {
-        ip = "ip --color";
-      }
-      // lib.optionalAttrs config.programs.bat.enable {cat = "bat";};
-    shellGlobalAliases = {eza = "eza --icons --git";};
+    shellAliases = {
+      ip = "ip --color";
+    }
+    // lib.optionalAttrs config.programs.bat.enable { cat = "bat"; };
+    shellGlobalAliases = {
+      eza = "eza --icons --git";
+    };
 
     plugins = [
       {

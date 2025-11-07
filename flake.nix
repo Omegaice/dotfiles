@@ -124,7 +124,8 @@
     };
   };
 
-  outputs = inputs @ {
+  outputs =
+    inputs@{
     flake-parts,
     helix,
     deploy-rs,
@@ -138,15 +139,19 @@
     umu,
     ...
   }:
-    flake-parts.lib.mkFlake {inherit inputs;} {
+    flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./host
         ./packages
         ./flake-modules/deploy-rs.nix
         inputs.home-manager.flakeModules.home-manager
       ];
-      systems = ["x86_64-linux" "aarch64-darwin"];
-      perSystem = {
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+      perSystem =
+        {
         lib,
         pkgs,
         config,
@@ -154,7 +159,8 @@
         inputs',
         system,
         ...
-      }: {
+        }:
+        {
         # checks = {
         #   pre-commit-check = pre-commit-hooks.lib.${system}.run {
         #     src = ./.;
@@ -166,13 +172,13 @@
         # };
 
         apps = {
-          install = let
+            install =
+              let
             installer = pkgs.writeShellApplication {
               name = "installer";
 
               runtimeInputs = builtins.attrValues {
-                inherit
-                  (pkgs)
+                    inherit (pkgs)
                   nix-output-monitor
                   nvd
                   busybox
@@ -197,13 +203,14 @@
                 "$(nix path-info "$PACKAGE")"/activate
               '';
             };
-          in {
+              in
+              {
             type = "app";
             program = "${installer}/bin/installer";
           };
         };
 
-        formatter = pkgs.alejandra;
+          formatter = pkgs.nixfmt-tree;
 
         devShells.default = pkgs.mkShell {
           # inherit (self'.checks.pre-commit-check) shellHook;

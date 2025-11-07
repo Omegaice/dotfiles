@@ -3,7 +3,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   programs.atuin = {
     enable = true;
     settings = {
@@ -50,27 +51,27 @@
       };
 
       Install = {
-        WantedBy = ["socket.target"];
+        WantedBy = [ "socket.target" ];
       };
     };
 
     services.atuin-daemon = {
       Unit = {
         Description = "Atuin daemon";
-        Requires = ["atuin-daemon.socket"];
+        Requires = [ "atuin-daemon.socket" ];
       };
 
       Service = {
         ExecStart = "${lib.getExe config.programs.atuin.package} daemon";
-        Environment = ["ATUIN_LOG=info"];
+        Environment = [ "ATUIN_LOG=info" ];
         Restart = "on-failure";
         RestartSteps = 3;
         RestartMaxDelaySec = 6;
       };
 
       Install = {
-        Also = ["atuin-daemon.socket"];
-        WantedBy = ["default.target"];
+        Also = [ "atuin-daemon.socket" ];
+        WantedBy = [ "default.target" ];
       };
     };
   };

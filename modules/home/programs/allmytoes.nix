@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -13,7 +18,10 @@ let
       mimes = mkOption {
         type = types.listOf types.str;
         description = "List of MIME types handled by this provider.";
-        example = [ "image/x-sony-arw" "image/x-canon-cr2" ];
+        example = [
+          "image/x-sony-arw"
+          "image/x-canon-cr2"
+        ];
       };
 
       commands = mkOption {
@@ -134,7 +142,7 @@ in
 
       # Generate provider configuration YAML only if custom providers are defined
       # Otherwise allmytoes uses its built-in defaults
-      xdg.configFile."allmytoes/provider.yaml" = mkIf (cfg.providers != {}) {
+      xdg.configFile."allmytoes/provider.yaml" = mkIf (cfg.providers != { }) {
         source = yamlFormat.generate "allmytoes-providers.yaml" allProviders;
       };
 

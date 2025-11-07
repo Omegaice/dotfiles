@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Allow users in video group to control backlight without sudo
   # Required for brightness keys and hypridle dimming to work
 

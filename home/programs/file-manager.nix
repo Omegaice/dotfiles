@@ -3,7 +3,8 @@
   lib,
   packages,
   ...
-}: let
+}:
+let
   # Sony ARW RAW image MIME type
   # ARW files are TIFF containers and most thumbnailers misdetect them as image/tiff
   sonyArwMimeXML = pkgs.writeText "sony-arw.xml" ''
@@ -24,7 +25,8 @@
       </mime-type>
     </mime-info>
   '';
-in {
+in
+{
   home.packages = with pkgs; [
     # GTK file manager - simple, opinionated, GNOME-style
     nautilus

@@ -3,11 +3,13 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   hyprland-conf = pkgs.writeText "hyprland-regreet-config" ''
     exec-once = "${lib.getExe config.programs.regreet.package}"
   '';
-in {
+in
+{
   services.greetd = {
     enable = true;
     settings = {
