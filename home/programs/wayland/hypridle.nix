@@ -2,7 +2,19 @@
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  # Power state checks
+  onBattery = ''[ "$(cat /sys/class/power_supply/AC*/online)" = "0" ]'';
+  onAC = ''[ "$(cat /sys/class/power_supply/AC*/online)" = "1" ]'';
+
+  # Actions
+  dimScreen = "${pkgs.brightnessctl}/bin/brightnessctl -s set 10%";
+  restoreBrightness = "${pkgs.brightnessctl}/bin/brightnessctl -r";
+  screenOff = "hyprctl dispatch dpms off";
+  screenOn = "hyprctl dispatch dpms on";
+  lockSession = "loginctl lock-session";
+  suspend = "systemctl suspend";
+in {
   services.hypridle = {
     enable = true;
     package = inputs.hypridle.packages.${pkgs.system}.default;
@@ -23,32 +35,57 @@
       };
 
       listener = [
-        # Dim screen after 5 minutes of inactivity
+        # === BATTERY PROFILE: 5/10/15/30 min ===
+
+        # Dim screen after 5 minutes on BATTERY
         {
-          timeout = 300; # 5 minutes
-          on-timeout = "${pkgs.brightnessctl}/bin/brightnessctl -s set 10%";
-          on-resume = "${pkgs.brightnessctl}/bin/brightnessctl -r";
+          timeout = 300;
+          on-timeout = ''${onBattery} && ${dimScreen}'';
+          on-resume = restoreBrightness;
         }
 
-        # Turn off screen after 10 minutes of inactivity
+        # Turn off screen after 10 minutes on BATTERY
         {
-          timeout = 600; # 10 minutes
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
+          timeout = 600;
+          on-timeout = ''${onBattery} && ${screenOff}'';
+          on-resume = screenOn;
         }
 
-        # Lock screen after 15 minutes of inactivity
+        # Lock screen after 15 minutes on BATTERY
         {
-          timeout = 900; # 15 minutes
-          on-timeout = "loginctl lock-session";
+          timeout = 900;
+          on-timeout = ''${onBattery} && ${lockSession}'';
         }
 
-        # Suspend system after 30 minutes of inactivity
-        # This is conservative - only happens if you've been idle for 30min
+        # Suspend after 30 minutes on BATTERY ONLY
         {
-          timeout = 1800; # 30 minutes
-          on-timeout = "systemctl suspend";
+          timeout = 1800;
+          on-timeout = ''${onBattery} && ${suspend}'';
         }
+
+        # === AC POWER PROFILE: 10/15/20/never ===
+
+        # Dim screen after 10 minutes on AC
+        {
+          timeout = 600;
+          on-timeout = ''${onAC} && ${dimScreen}'';
+          on-resume = restoreBrightness;
+        }
+
+        # Turn off screen after 15 minutes on AC
+        {
+          timeout = 900;
+          on-timeout = ''${onAC} && ${screenOff}'';
+          on-resume = screenOn;
+        }
+
+        # Lock screen after 20 minutes on AC
+        {
+          timeout = 1200;
+          on-timeout = ''${onAC} && ${lockSession}'';
+        }
+
+        # Never suspend on AC (no listener for AC suspend)
       ];
     };
   };
