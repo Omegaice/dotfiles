@@ -10,13 +10,20 @@
       # Project-specific patterns (.env, secrets/) go in .claude/settings.local.json
       permissions = {
         allow = [
+          # General system tools
+          "Bash(mkdir:*)"
+
+          # Context7 MCP server tools
           "mcp__context7__resolve-library-id"
           "mcp__context7__get-library-docs"
+
+          # Directories or files that need to be writable for tools
+          "Edit(~/.local/cache/nix/)" # Nix cache
         ];
         deny = [
           # SSH and GPG keys
-          "Read(~/.ssh/**)"
-          "Read(~/.gnupg/**)"
+          "Read(~/.ssh/)"
+          "Read(~/.gnupg/)"
 
           # Claude Code's own credentials
           "Read(~/.claude/.credentials.json)"
@@ -37,28 +44,28 @@
           "Read(~/.gitconfig.local)"
 
           # Cloud provider credentials
-          "Read(~/.aws/**)"
-          "Read(~/.config/gcloud/**)"
-          "Read(~/.azure/**)"
+          "Read(~/.aws/)"
+          "Read(~/.config/gcloud/)"
+          "Read(~/.azure/)"
 
           # GitHub CLI
-          "Read(~/.config/gh/**)"
+          "Read(~/.config/gh/)"
 
           # Docker and Kubernetes
-          "Read(~/.docker/**)"
-          "Read(~/.kube/**)"
+          "Read(~/.docker/)"
+          "Read(~/.kube/)"
 
           # Password managers and keyrings
-          "Read(~/.password-store/**)"
-          "Read(~/.config/Bitwarden/**)"
-          "Read(~/.config/1Password/**)"
-          "Read(~/.local/share/keyrings/**)"
+          "Read(~/.password-store/)"
+          "Read(~/.config/Bitwarden/)"
+          "Read(~/.config/1Password/)"
+          "Read(~/.local/share/keyrings/)"
 
           # Browser profiles (session cookies, saved passwords)
-          "Read(~/.mozilla/**)"
-          "Read(~/.config/google-chrome/**)"
-          "Read(~/.config/chromium/**)"
-          "Read(~/.config/BraveSoftware/**)"
+          "Read(~/.mozilla/)"
+          "Read(~/.config/google-chrome/)"
+          "Read(~/.config/chromium/)"
+          "Read(~/.config/BraveSoftware/)"
 
           # Database credential files
           "Read(~/.pgpass)"
@@ -76,7 +83,7 @@
           "Read(~/.netrc)"
 
           # Subversion credentials
-          "Read(~/.subversion/auth/**)"
+          "Read(~/.subversion/auth/)"
         ];
       };
 
