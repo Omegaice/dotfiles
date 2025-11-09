@@ -16,11 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    alejandra = {
-      url = "github:kamadorueda/alejandra/3.1.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -134,7 +129,6 @@
     hyprland,
     hyprpolkitagent,
     system-manager,
-    alejandra,
     yazi,
     umu,
     ...
@@ -165,7 +159,6 @@
         #   pre-commit-check = pre-commit-hooks.lib.${system}.run {
         #     src = ./.;
         #     hooks = {
-        #       alejandra.enable = true;
         #       statix.enable = true;
         #     };
         #   };

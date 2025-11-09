@@ -2,7 +2,8 @@
 # nix tooling
 {
   home.packages = with pkgs; [
-    alejandra
+    nixfmt-rfc-style
+    nixfmt-tree
     deadnix
     statix
     cachix
