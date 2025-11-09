@@ -159,13 +159,30 @@ in
             SIZE="$2"
             OUTPUT="$3"
 
-            # allmytoes returns path to cached thumbnail
-            THUMB=$(${lib.getExe cfg.package} "$INPUT" -s "$SIZE" 2>/dev/null)
+            # Convert pixel size to allmytoes size code
+            # Freedesktop spec: normal=128, large=256, x-large=512, xx-large=1024
+            if [ "$SIZE" -le 128 ]; then
+              AMT_SIZE="n"
+            elif [ "$SIZE" -le 256 ]; then
+              AMT_SIZE="l"
+            elif [ "$SIZE" -le 512 ]; then
+              AMT_SIZE="x"
+            else
+              AMT_SIZE="xx"
+            fi
 
-            if [ -n "$THUMB" ] && [ -f "$THUMB" ]; then
-              cp "$THUMB" "$OUTPUT"
+            # allmytoes returns path to cached thumbnail
+            THUMB=$(${lib.getExe cfg.package} "$INPUT" -s "$AMT_SIZE" 2>/dev/null)
+
+            # Copy thumbnail to output path if generation succeeded
+            if [ $? -eq 0 ] && [ -n "$THUMB" ] && [ -f "$THUMB" ]; then
+              # Only copy if output path differs from cached thumbnail path
+              if [ "$THUMB" != "$OUTPUT" ]; then
+                cp "$THUMB" "$OUTPUT"
+              fi
               exit 0
             fi
+
             exit 1
           '';
         in
