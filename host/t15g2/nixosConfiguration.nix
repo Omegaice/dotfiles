@@ -29,6 +29,7 @@
           };
       };
       modules = [
+        inputs.determinate.nixosModules.default
         ./hardware-configuration.nix
         ../../system/core
         ../../system/core/boot.nix
@@ -82,7 +83,6 @@
 
             # Machine-specific packages
             environment.systemPackages = with pkgs; [
-              webcord # Discord client
               brightnessctl # Laptop screen brightness control
               #samba4Full
               nwjs # For NW.js-based games
