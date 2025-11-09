@@ -97,19 +97,35 @@ let
   pluginPackages = map (p: p.plugin) normalizedPlugins;
   pluginDeps = flatten (map (p: p.runtimeInputs or [ ]) pluginPackages);
 
+  # Normalize previewer/preloader entries
+  # Converts strings like "image/*" to { mime = "image/*"; run = "plugin-name"; }
+  normalizeEntry = pluginName: entry:
+    if builtins.isString entry then
+      { mime = entry; run = pluginName; }
+    else if entry ? run then
+      entry  # Already has run field
+    else
+      entry // { run = pluginName; }; # Add run field
+
   # Extract auto-configuration from plugins with override support
   # For each plugin, use explicit override if provided, otherwise fall back to plugin metadata
   extractPreviewers =
     p:
+    let
+      pluginName = p.plugin.yaziPluginName or p.plugin.pname;
+    in
     if p.previewers != null then
-      p.previewers # User override
+      map (normalizeEntry pluginName) p.previewers # User override (normalized)
     else
       p.plugin.yaziPreviewers or [ ]; # Plugin metadata
 
   extractPreloaders =
     p:
+    let
+      pluginName = p.plugin.yaziPluginName or p.plugin.pname;
+    in
     if p.preloaders != null then
-      p.preloaders # User override
+      map (normalizeEntry pluginName) p.preloaders # User override (normalized)
     else
       p.plugin.yaziPreloaders or [ ]; # Plugin metadata
 
